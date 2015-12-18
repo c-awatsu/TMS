@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: tms
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: CA
+Implementation-Vendor-Id: tms
+Build-Jdk: 1.8.0_40
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+Main-Class: tms.Config.WicketApplication
+
