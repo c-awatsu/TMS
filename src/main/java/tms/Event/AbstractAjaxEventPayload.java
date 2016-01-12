@@ -7,12 +7,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 /**
  * {@link IAjaxEventPayload} の abstract実装クラス.
  *
- * @author CIST yamakawa
- * @see https://github.com/tyano/wicket15-snippet
- * @see http://apache-wicket.1842946.n4.nabble.com/Wicket-Events-td4650065.html
  *
- * @param <T>
- *          type of event source.
  */
 public abstract class AbstractAjaxEventPayload<T> implements IAjaxEventPayload<T> {
 

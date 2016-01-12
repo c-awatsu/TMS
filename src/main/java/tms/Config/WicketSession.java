@@ -62,7 +62,6 @@ public class WicketSession extends AbstractAuthenticatedWebSession {
 
 	@Override
 	public Roles getRoles() {
-		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 

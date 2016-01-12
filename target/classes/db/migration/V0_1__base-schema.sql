@@ -4,12 +4,14 @@ create table account (
 	--ログインID(ユニーク)
 	login_id varchar(256) unique not null,
 	--パスワード
-	passphrase varchar(256) not null
+	passphrase varchar(256) not null,
+	--ニックネーム--
+	nickname varchar(256) not null
 );
 
 create table product(
 	--サロゲートキー
-	product_id serial primary key
+	product_id serial primary key,
 	--製品名
 	name varchar(256) not null
 );
@@ -26,7 +28,7 @@ create table test(
 	--
 	product_id integer not null,
 
-	foreign key (product_id)references product(product_id) on delete cascade
+	foreign key (product_id)references product(product_id) on delete cascade,
 	foreign key (product_id)references product(product_id) on update cascade
 );
 

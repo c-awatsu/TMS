@@ -12,10 +12,6 @@ import org.apache.wicket.event.IEvent;
  * {@link EventHandler} を呼び出すための {@link IEventDispatcher}.
  *
  *
- * @author Hiroto Yamakawa
- * @see https://github.com/tyano/wicket15-snippet
- * @see http://apache-wicket.1842946.n4.nabble.com/Wicket-Events-td4650065.html
- * @see http://www.coppermine.jp/docs/programming/2012/05/invocationtargetexception.html
  */
 public class EventHandlerDispatcher implements IEventDispatcher {
 

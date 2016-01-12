@@ -6,7 +6,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 /**
  * Wicket の Event システムを用いてコンポーネントを更新する payload.
  *
- * @author CIST yamakawa
  * @see https://github.com/tyano/wicket15-snippet
  * @see http://apache-wicket.1842946.n4.nabble.com/Wicket-Events-td4650065.html
  *
@@ -34,7 +33,7 @@ public class RefreshPayload<T> extends AbstractAjaxEventPayload<T> {
 
 	/**
 	 * Factory method.
-	 * 
+	 *
 	 * @param source
 	 *          the event source.
 	 * @param target

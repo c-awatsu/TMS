@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+
+		<h1>TMS</h1>
+		<h2>サインイン</h2>
+		<div  style = "margin:0">
+			<h5><a href = # wicket:id = "toSignUpPage">新規アカウントの作成</a></h5>
+		</div>
+		<p>パスワードとログインIDを入力してください</p>
+		<div wicket:id="feedback"></div>
+
+		<form class="form-horizontal" wicket:id="form">
+			<fieldset>
+				<div class="form-group">
+					<label class="col-sm-5 control-label">ログインID</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" wicket:id="loginId" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-5 control-label">パスワード</label>
+					<div class=col-sm-4>
+						<input type="password" class="form-control" wicket:id="passphrase" />
+					</div>
+				</div>
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-5">
+							<input type="submit" class="btn btn-primary"/>サインイン
+						</div>
+					</div>
+			</fieldset>
+		</form>
+
+</body>
+</html>
