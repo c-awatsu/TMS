@@ -2,11 +2,11 @@ create table account (
 	--サロゲートキー
 	account_id serial primary key,
 	--ログインID(ユニーク)
-	login_id varchar(256) unique not null,
+	login_id varchar(32) unique not null,
 	--パスワード
 	passphrase varchar(256) not null,
 	--ニックネーム--
-	nickname varchar(256) not null
+	nickname varchar(32) not null
 );
 
 create table product(

@@ -6,19 +6,27 @@ import jp.ac.chitose.tms.Bean.ProductItem;
 import lombok.val;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ProductRepository implements IProductRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
+	@Autowired
+	private JdbcTemplate dao;
 
 	@Override
 	public List<ProductItem> fetchProductItems() {
 		val sql = "select name from product";
-		val param = new MapSqlParameterSource();
-		return jdbc.queryForList(sql, param,ProductItem.class);
+		RowMapper<ProductItem> mapper = new BeanPropertyRowMapper<ProductItem>(ProductItem.class);
+		return dao.query(sql, mapper);
+
 	}
 
 	@Override

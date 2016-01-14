@@ -1,7 +1,6 @@
 package jp.ac.chitose.tms.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import jp.ac.chitose.tms.Bean.ProductItem;
 import jp.ac.chitose.tms.Repositoy.IProductRepository;
@@ -26,12 +25,14 @@ public class ProductService implements IProductService {
 
 	@Override
 	public int countProgresOfTest(String productName) {
-		val testItem =  testRepository.fetchTestItems(
+		val testItems =  testRepository.fetchTestItems(
 				productRepository.selectProductItems(productName));
-		val testRecordItems = testItem.stream().map(t ->
-				testRepository.fetchTestRecordItems(t.getTestId())
-			).collect(Collectors.toList());
+//		val testRecordItems = testItems.stream().map(t ->{
+//				return testRepository.fetchTestRecordItems(t.getTestId());
+//		});
+//		System.out.println(testRecordItems);
 		//TODO テスト進行度を計算して返す
+
 		return 0;
 	}
 
