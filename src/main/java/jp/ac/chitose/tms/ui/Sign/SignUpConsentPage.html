@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+
+	<h1>TMS</h1>
+	<div style="margin: 0;">
+		<p>この情報でアカウントを作成します。よろしいですか？</p>
+		<div wicket:id = "feedback"></div>
+			<div align=center>
+				<p wicket:id="loginId">SignUpPageで入力されたloginId</p>
+				<p wicket:id="passphrase">SignUpPageで入力されたpassphrase</p>
+				<p wicket:id="nickName">SignUpPageで入力されたnickName</p>
+				<button type = "button" wicket:id = "toSignInPage" class = "btn btn-prymary">はい</button>
+				<button type = "button" wicket:id = "toSignUpPage" class = "btn btn-prymary" >いいえ</button>
+			</div>
+		</div>
+</body>
+</html>

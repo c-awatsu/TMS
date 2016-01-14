@@ -10,6 +10,7 @@
 		<config>java:tms.Sign.SignUpPage</config>
 	</configs>
 	<autoconfigs>
+		<config>java:tms.Config.WicketApplication</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>
