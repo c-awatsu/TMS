@@ -21,17 +21,4 @@ public class ProductService implements IProductService {
 	public List<ProductItem> fetchProductItems() {
 		return productRepository.fetchProductItems();
 	}
-
-//	@Override
-//	public int countProgresOfTest(String productName) {
-//		val testItems =  testRepository.fetchTestItems(
-//				productRepository.selectProductItems(productName));
-////		val testRecordItems = testItems.stream().map(t ->{
-////				return testRepository.fetchTestRecordItems(t.getTestId());
-////		});
-////		System.out.println(testRecordItems);
-//
-//		return 0;
-//	}
-
 }

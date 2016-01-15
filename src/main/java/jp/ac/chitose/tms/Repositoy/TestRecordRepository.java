@@ -23,6 +23,8 @@ public class TestRecordRepository implements ITestRecordReposiory {
 		val result = jdbc.query(sql, param, mapper);
 		if(result.size() > 0) return result.get(0);
 		else return new TestRecordItem();
+		//TODO ProductRepositoryと同様の不具合
+		//結果の一部のカラムが全て[unread]になる
 	}
 
 }
