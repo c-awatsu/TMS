@@ -15,7 +15,7 @@ public class TestItem implements Serializable{
 	@NonNull
 	private String step;
 	@NonNull
-	private String exepectedOutput;
+	private String expectedOutput;
 	@NonNull
 	private Integer productId;
 

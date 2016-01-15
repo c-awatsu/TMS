@@ -1,7 +1,7 @@
 package jp.ac.chitose.tms.Bean;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,8 @@ public class TestRecordItem implements Serializable{
 	@NonNull
 	private Integer testRecordId;
 
-	private Timestamp date;
+	@NonNull
+	private Date testDate;
 
 	@NonNull
 	private Integer testerId;
@@ -22,9 +23,12 @@ public class TestRecordItem implements Serializable{
 	private Boolean result;
 
 	@NonNull
+	private String note;
+
+	@NonNull
 	private Integer testId;
 
 	public TestRecordItem(){
-		this(0, null, 0, false, 0);
+		this(0, new Date(0), 0, false, "", 0);
 	}
 }

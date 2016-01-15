@@ -10,6 +10,7 @@ import lombok.val;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -41,14 +42,17 @@ public class TopPage extends WebPage{
 
 			@Override
 			protected void populateItem(ListItem<ProductItem> item) {
-//				item.add(new Link<Void>("productName"){
-//					@Override
-//					public void onClick() {
-//						//TODO 製品ごとのテスト項目表示ページへ
-//					}
-//				});
+				val productLink = new Link<Void>("productLink"){
+					@Override
+					public void onClick() {
+						//TODO 製品ごとのテスト項目表示ページへ
+					}
 
-				item.add(new Label("productName",item.getModelObject().getProductName()));
+
+				};
+				item.add(productLink);
+
+				productLink.add(new Label("productName",item.getModelObject().getName()));
 
 				item.add(new Label("progressOfTest",new AbstractReadOnlyModel<String>(){
 

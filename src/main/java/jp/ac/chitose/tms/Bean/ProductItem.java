@@ -12,7 +12,7 @@ public class ProductItem implements Serializable{
 	@NonNull
 	private Integer productId;
 	@NonNull
-	private String productName;
+	private String name;
 
 	public ProductItem(){
 		this(0,"");

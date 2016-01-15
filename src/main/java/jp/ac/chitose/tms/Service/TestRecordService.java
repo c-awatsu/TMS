@@ -15,7 +15,7 @@ public class TestRecordService implements ITestRecordService{
 	private ITestRecordReposiory trRepository;
 	@Autowired
 	private ITestRepository tRepository;
-
+//
 //	@Override
 //	public TestProgressItem getTestProgress(Integer productId) {
 //
@@ -28,7 +28,6 @@ public class TestRecordService implements ITestRecordService{
 //				}).filter(i->i.getResult())
 //				.collect(Collectors.toList());
 //		return new TestProgressItem(successTestItem.size(),testItemsNum);
-//
 //	}
 
 	@Override
@@ -37,7 +36,7 @@ public class TestRecordService implements ITestRecordService{
 		int count = 0;
 		val testItems = tRepository.fetchTestItems(productId);
 		for(TestItem testItem: testItems){
-			if(trRepository.selectLatestTestRecord(testItem.getTestId()).getResult())count++;
+			if(trRepository.selectLatestResult(testItem.getTestId()))count++;
 		}
 		return new TestProgressItem(count, testItems.size());
 	}

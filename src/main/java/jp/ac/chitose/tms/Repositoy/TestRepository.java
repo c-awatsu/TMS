@@ -28,8 +28,6 @@ public class TestRepository implements ITestRepository {
 		val param = new MapSqlParameterSource().addValue("1", productId);
 		val mapper = new BeanPropertyRowMapper<TestItem>(TestItem.class);
 		return jdbc.query(sql, param, mapper);
-		//TODO ProductRepositoryと同様の不具合
-		//結果の一部のカラムが全て[unread]になる
 	}
 
 }
