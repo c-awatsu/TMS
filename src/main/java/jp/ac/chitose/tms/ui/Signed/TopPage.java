@@ -37,7 +37,6 @@ public class TopPage extends WebPage{
 			}
 		};
 
-		//モックアップとしてテーブルをただ表示するだけ
 		add(new PropertyListView<ProductItem>("productList",productList) {
 
 			@Override
@@ -47,8 +46,6 @@ public class TopPage extends WebPage{
 					public void onClick() {
 						//TODO 製品ごとのテスト項目表示ページへ
 					}
-
-
 				};
 				item.add(productLink);
 

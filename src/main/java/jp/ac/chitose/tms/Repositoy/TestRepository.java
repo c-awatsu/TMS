@@ -18,11 +18,6 @@ public class TestRepository implements ITestRepository {
 
 	@Override
 	public List<TestItem> fetchTestItems(Integer productId) {
-//		val sql = "select * from test "
-//				+ "where product_id = :1 ";
-//		val param = new MapSqlParameterSource()
-//				.addValue("1", productId);
-//		return jdbc.queryForList(sql, param, TestItem.class);
 		val sql = "select * from test "
 				+ "where product_id = :1 ";
 		val param = new MapSqlParameterSource().addValue("1", productId);

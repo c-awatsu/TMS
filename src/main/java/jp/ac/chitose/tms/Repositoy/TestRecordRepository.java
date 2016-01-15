@@ -14,7 +14,6 @@ public class TestRecordRepository implements ITestRecordReposiory {
 
 	@Override
 	public boolean selectLatestResult(Integer testId) {
-//		val sql = "SELECT result FROM TEST_RECORD where test_id = :1 and test_record_id = (select max(test_record_id) from test_record)";
 		val sql = "select result from test_record where test_record_id = ("
 				+ "select max(test_record_id) "
 				+ "from test_record "
