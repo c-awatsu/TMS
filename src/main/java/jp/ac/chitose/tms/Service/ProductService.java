@@ -26,13 +26,16 @@ public class ProductService implements IProductService {
 
 	@Override
 	public int countProgresOfTest(String productName) {
-		val testItem =  testRepository.fetchTestItems(
+		val testItems =  testRepository.fetchTestItems(
 				productRepository.selectProductItems(productName));
-		val testRecordItems = testItem.stream().map(t ->
+		val testRecordItems = testItems.stream().map(t ->
 				testRepository.fetchTestRecordItems(t.getTestId())
 			).collect(Collectors.toList());
 		//TODO テスト進行度を計算して返す
-		return 0;
+		int size = testItems.size();
+		int testFinished = 0;
+
+		return testFinished;
 	}
 
 }

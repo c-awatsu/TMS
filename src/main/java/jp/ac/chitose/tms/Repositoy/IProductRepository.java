@@ -7,5 +7,4 @@ import jp.ac.chitose.tms.Bean.ProductItem;
 public interface IProductRepository {
 	public List<ProductItem> fetchProductItems();
 	public int selectProductItems(String productName);
-
 }
