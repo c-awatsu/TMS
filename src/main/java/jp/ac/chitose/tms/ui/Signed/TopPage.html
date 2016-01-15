@@ -8,7 +8,7 @@
 </head>
 <body>
 	<p wicket:id = "test">ログイン成功</p>
-	<table class = "table table-bordered center width2"wicket:id = productList>
+	<table class = "table table-bordered center width2">
 		<thead>
 			<tr>
 				<td>製品名</td>
@@ -16,7 +16,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
+			<tr wicket:id = productList>
 				<td wicket:id = "productName">製品名</td>
 				<td wicket:id = "progressOfTest">テスト進行度</td>
 			</tr>

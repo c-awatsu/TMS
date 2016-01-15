@@ -8,7 +8,6 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -23,8 +22,8 @@ public class ProductRepository implements IProductRepository {
 
 	@Override
 	public List<ProductItem> fetchProductItems() {
-		val sql = "select name from product";
-		RowMapper<ProductItem> mapper = new BeanPropertyRowMapper<ProductItem>(ProductItem.class);
+		val sql = "select * from product";
+		val mapper = new BeanPropertyRowMapper<ProductItem>(ProductItem.class);
 		return dao.query(sql, mapper);
 
 	}

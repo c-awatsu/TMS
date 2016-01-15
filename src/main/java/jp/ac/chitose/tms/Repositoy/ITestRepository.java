@@ -6,6 +6,6 @@ import jp.ac.chitose.tms.Bean.TestItem;
 
 
 public interface ITestRepository {
-	public List<TestItem> fetchTestItems(long productId);
+	public List<TestItem> fetchTestItems(Integer productId);
 
 }

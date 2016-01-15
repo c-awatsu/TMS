@@ -2,20 +2,24 @@ package jp.ac.chitose.tms.Bean;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 @Data
+@AllArgsConstructor
 public class TestItem implements Serializable{
-	private long testId;
+	@NonNull
+	private Integer testId;
+	@NonNull
 	private String classification;
+	@NonNull
 	private String step;
+	@NonNull
 	private String exepectedOutput;
-	private long productId;
+	@NonNull
+	private Integer productId;
 
 	public TestItem(){
-		testId = 0;
-		classification = "";
-		step = "";
-		exepectedOutput = "";
-		productId = 0;
+		this(0, "", "", "", 0);
 	}
 }

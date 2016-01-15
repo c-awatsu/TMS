@@ -3,21 +3,28 @@ package jp.ac.chitose.tms.Bean;
 import java.io.Serializable;
 import java.security.Timestamp;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
 public class TestRecordItem implements Serializable{
-	private long testRecordId;
+	@NonNull
+	private Integer testRecordId;
+
 	private Timestamp date;
-	private long testerId;
-	private boolean result;
-	private int testId;
+
+	@NonNull
+	private Integer testerId;
+
+	@NonNull
+	private Boolean result;
+
+	@NonNull
+	private Integer testId;
 
 	public TestRecordItem(){
-		testRecordId = 0;
-		date = null;
-		testerId = 0;
-		result = false;
-		testId = 0;
+		this(0, null, 0, false, 0);
 	}
 }

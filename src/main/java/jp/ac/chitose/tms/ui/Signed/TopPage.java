@@ -35,6 +35,7 @@ public class TopPage extends WebPage{
 				return productService.fetchProductItems();
 			}
 		};
+
 		//モックアップとしてテーブルをただ表示するだけ
 		add(new PropertyListView<ProductItem>("productList",productList) {
 

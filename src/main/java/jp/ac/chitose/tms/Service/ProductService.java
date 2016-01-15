@@ -5,7 +5,6 @@ import java.util.List;
 import jp.ac.chitose.tms.Bean.ProductItem;
 import jp.ac.chitose.tms.Repositoy.IProductRepository;
 import jp.ac.chitose.tms.Repositoy.ITestRepository;
-import lombok.val;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,17 +22,16 @@ public class ProductService implements IProductService {
 		return productRepository.fetchProductItems();
 	}
 
-	@Override
-	public int countProgresOfTest(String productName) {
-		val testItems =  testRepository.fetchTestItems(
-				productRepository.selectProductItems(productName));
-//		val testRecordItems = testItems.stream().map(t ->{
-//				return testRepository.fetchTestRecordItems(t.getTestId());
-//		});
-//		System.out.println(testRecordItems);
-		//TODO テスト進行度を計算して返す
-
-		return 0;
-	}
+//	@Override
+//	public int countProgresOfTest(String productName) {
+//		val testItems =  testRepository.fetchTestItems(
+//				productRepository.selectProductItems(productName));
+////		val testRecordItems = testItems.stream().map(t ->{
+////				return testRepository.fetchTestRecordItems(t.getTestId());
+////		});
+////		System.out.println(testRecordItems);
+//
+//		return 0;
+//	}
 
 }
