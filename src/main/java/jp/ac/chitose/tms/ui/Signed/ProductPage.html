@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta charset="UTF-8">
+<title wicket:id="title">製品名</title>
+</head>
+<body>
+<div wicket:id="productName">製品名</div>
+<form wicket:id="inputForm">
+<table border="1">
+<thead>
+<tr>
+<td>
+テスト番号
+</td>
+<td>
+種別
+</td>
+<td>
+実行ステップ
+</td>
+<td>
+期待される出力
+</td>
+<td>
+最終結果
+</td>
+</tr>
+</thead>
+<tbody>
+<tr wicket:id="testList">
+<td wicket:id="testId">
+1
+</td>
+<td wicket:id="classification">
+正常系
+</td>
+<td wicket:id="step">
+1.「出席を提出する」ボタンをクリックする
+</td>
+<td wicket:id="expectedOutput">
+入力フォームが表示される
+</td>
+<td wicket:id="latestResult">
+○
+</td>
+</tr>
+<tr wicket:id="inputLine">
+<td><button wicket:id="inputButton">登録</button></td>
+<td><input type="text" wicket:id="classification" /></td>
+<td><input type="text" wicket:id="step" /></td>
+<td><input type="text" wicket:id="expectedOutput" /></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</form>
+<button wicket:id="inputFormChangeVisibleButton">
+	<span wicket:id="inputFormChangeVisibleButtonLabel">+</span>
+</button>
+</body>
+</html>

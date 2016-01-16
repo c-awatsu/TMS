@@ -17,4 +17,10 @@ public class TestService implements ITestService{
 	public List<TestItem> fetchTestItems(int productId) {
 		return testRepository.fetchTestItems(productId);
 	}
+
+	@Override
+	public boolean inputTestItem(TestItem item) {
+		return testRepository.insert(item) == 1;
+	}
+
 }

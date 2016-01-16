@@ -4,6 +4,6 @@ import jp.ac.chitose.tms.Bean.TestRecordItem;
 
 
 public interface ITestRecordReposiory {
-	public TestRecordItem selectLatestResult(Integer testId);
-
+	public TestRecordItem selectLatestResult(int testId);
+	public boolean isEmpty(int testId);
 }
