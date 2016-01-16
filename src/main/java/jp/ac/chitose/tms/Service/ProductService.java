@@ -21,4 +21,9 @@ public class ProductService implements IProductService {
 	public List<ProductItem> fetchProductItems() {
 		return productRepository.fetchProductItems();
 	}
+
+	@Override
+	public ProductItem getProductItem(int productId) {
+		return productRepository.fetchProductItem(productId);
+	}
 }

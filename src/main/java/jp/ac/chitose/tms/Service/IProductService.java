@@ -6,4 +6,5 @@ import jp.ac.chitose.tms.Bean.ProductItem;
 
 public interface IProductService {
 	public List<ProductItem> fetchProductItems();
+	public ProductItem getProductItem(int productId);
 }

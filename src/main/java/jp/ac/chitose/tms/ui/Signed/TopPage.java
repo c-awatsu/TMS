@@ -44,7 +44,7 @@ public class TopPage extends WebPage{
 				val productLink = new Link<Void>("productLink"){
 					@Override
 					public void onClick() {
-						//TODO 製品ごとのテスト項目表示ページへ
+						setResponsePage(new ProductPage(item.getModelObject().getProductId()));
 					}
 				};
 				item.add(productLink);

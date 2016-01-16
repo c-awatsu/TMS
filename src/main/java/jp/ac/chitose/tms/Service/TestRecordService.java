@@ -2,6 +2,7 @@ package jp.ac.chitose.tms.Service;
 
 import jp.ac.chitose.tms.Bean.TestItem;
 import jp.ac.chitose.tms.Bean.TestProgressItem;
+import jp.ac.chitose.tms.Bean.TestRecordItem;
 import jp.ac.chitose.tms.Repositoy.ITestRecordReposiory;
 import jp.ac.chitose.tms.Repositoy.ITestRepository;
 import lombok.val;
@@ -36,8 +37,15 @@ public class TestRecordService implements ITestRecordService{
 		int count = 0;
 		val testItems = tRepository.fetchTestItems(productId);
 		for(TestItem testItem: testItems){
-			if(trRepository.selectLatestResult(testItem.getTestId()))count++;
+			if(trRepository.selectLatestResult(testItem.getTestId()).getResult())count++;
 		}
 		return new TestProgressItem(count, testItems.size());
 	}
+
+	@Override
+	public TestRecordItem getLatestTestRecord(int testId) {
+		return trRepository.selectLatestResult(testId);
+	}
+
+
 }

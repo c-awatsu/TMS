@@ -1,7 +1,9 @@
 package jp.ac.chitose.tms.Repositoy;
 
+import jp.ac.chitose.tms.Bean.TestRecordItem;
+
 
 public interface ITestRecordReposiory {
-	public boolean selectLatestResult(Integer testId);
+	public TestRecordItem selectLatestResult(Integer testId);
 
 }

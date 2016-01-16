@@ -38,6 +38,13 @@ public class ProductRepository implements IProductRepository {
 		return jdbc.queryForObject(sql, param, Integer.class);
 	}
 
-
+	@Override
+	public ProductItem fetchProductItem(int productId) {
+		val sql ="select * from product where product_id = :1";
+		val param = new MapSqlParameterSource()
+						.addValue("1", productId);
+		val mapper = new BeanPropertyRowMapper<ProductItem>(ProductItem.class);
+		return jdbc.queryForObject(sql, param, mapper);
+	}
 
 }
