@@ -96,6 +96,7 @@ public class ProductPage extends WebPage {
 				val testItem = (TestItem) inputLine.getDefaultModelObject();
 				testItem.setProductId(productId);
 				testService.inputTestItem(testItem);
+				inputLine.setDefaultModelObject(new TestItem());
 			}
 		});
 
