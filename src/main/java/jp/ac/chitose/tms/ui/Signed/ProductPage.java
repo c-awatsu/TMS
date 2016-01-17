@@ -3,11 +3,14 @@ package jp.ac.chitose.tms.ui.Signed;
 import java.util.List;
 
 import jp.ac.chitose.tms.Bean.TestItem;
+import jp.ac.chitose.tms.Event.Behavior.LineLinkBehavior;
 import jp.ac.chitose.tms.Service.IProductService;
 import jp.ac.chitose.tms.Service.ITestRecordService;
 import jp.ac.chitose.tms.Service.ITestService;
 import lombok.val;
 
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -60,19 +63,28 @@ public class ProductPage extends WebPage {
 		inputForm.add(new ListView<TestItem>("testList",testItemsModel){
 			@Override
 			protected void populateItem(ListItem<TestItem> item) {
+				val testItem = item.getModelObject();
 				item.add(new Label("latestResult", new AbstractReadOnlyModel<String>() {
 					@Override
 					public String getObject() {
-						val latest = testRecordService.getLatestTestRecord(item.getModelObject().getTestId());
+						val latest = testRecordService.getLatestTestRecord(testItem.getTestId());
 						val result = latest != null ? latest.getResult() : false;
 						return result ? "○":"×";
 					}
 				}));
-				item.setDefaultModel(new CompoundPropertyModel<TestItem>(item.getModelObject()));
+				item.setDefaultModel(new CompoundPropertyModel<TestItem>(testItem));
 				item.add(new Label("testId"));
 				item.add(new Label("classification"));
 				item.add(new Label("step"));
 				item.add(new Label("expectedOutput"));
+
+				item.add(new AjaxEventBehavior("onclick"){
+					@Override
+					protected void onEvent(AjaxRequestTarget target) {
+						// TODO テスト項目がクリックされた時の処理
+					}
+				});
+				item.add(new LineLinkBehavior());
 			}
 		});
 
