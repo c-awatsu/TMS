@@ -13,7 +13,7 @@ create table product(
 	--サロゲートキー
 	product_id serial primary key,
 	--製品名
-	name varchar(256) not null
+	name varchar(256) not null unique
 );
 
 create table test(

@@ -1,9 +1,5 @@
 package jp.ac.chitose.tms.Service;
 
-import static java.util.Optional.*;
-
-import java.util.Optional;
-
 import jp.ac.chitose.tms.Bean.Sign;
 import jp.ac.chitose.tms.Bean.SignIn;
 import jp.ac.chitose.tms.Bean.SignUp;
@@ -35,18 +31,16 @@ public class SignService implements ISignService {
 	}
 
 	@Override
-	public Optional<Sign> authenticate(SignIn signIn) {
+	public Sign authenticate(SignIn signIn) {
 		Sign sign = null;
 		try{
-			int accountId = signRepository.fetchAccountId(signIn.getLoginId(),
-														DigestUtils.sha256Hex(signIn.getPassphrase())
-														);
+			int accountId = signRepository.fetchAccountId(signIn.getLoginId(),DigestUtils.sha256Hex(signIn.getPassphrase()));
 			sign = new Sign(accountId,signIn.getLoginId());
 		}catch(EmptyResultDataAccessException e){
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
-		return ofNullable(sign);
+		return sign;
 	}
 
 	@Override

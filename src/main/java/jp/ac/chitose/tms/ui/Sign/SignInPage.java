@@ -8,6 +8,7 @@ import jp.ac.chitose.tms.Service.ISignService;
 import jp.ac.chitose.tms.ui.Signed.TopPage;
 import lombok.val;
 
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.HTML5Attributes;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
@@ -30,20 +31,27 @@ public class SignInPage extends WebPage{
 	private ISignService signService;
 
 	public SignInPage(){
+		if(!signService.exsitsUser()){
+			throw new RestartResponseException(SignUpPage.class);
+		}
+
 		add(new ErrorAlertPanel("feedback"));
+
 		add(new Link<Void>("toSignUpPage"){
 			@Override
 			public void onClick() {
 				setResponsePage(new SignUpPage());
 			}
 		});
-		val form = new Form<SignIn>("form",new CompoundPropertyModel<SignIn>(new SignIn())){
+
+		val form = new Form<SignIn>("form",new CompoundPropertyModel<>(new SignIn())){
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
 				val sign = signService.authenticate(getModelObject());
-				WicketSession.get().signIn(sign);
-				if(WicketSession.get().isSignedIn()){
+				WicketSession session = new WicketSession(getRequest());
+				session.signIn(sign);
+				if(session.isSignedIn()){
 					setResponsePage(TopPage.class);
 				}
 			}
@@ -71,6 +79,8 @@ public class SignInPage extends WebPage{
 				super.onInitialize();
 				setLabel(Model.of(LABEL_NAME));
 				add(new HTML5Attributes());
+				add(StringValidator.lengthBetween(SIGNING_MIN_LENGTH, SIGNING_MAX_LENGTH));
+
 			};
 		});
 	}
