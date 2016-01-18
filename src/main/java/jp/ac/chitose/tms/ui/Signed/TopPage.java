@@ -26,6 +26,7 @@ public class TopPage extends WebPage{
 	private ITestService tService;
 	@SpringBean
 	private ITestRecordService trService;
+
 	public TopPage(){
 		add(new Label("test","ログイン成功"));
 
