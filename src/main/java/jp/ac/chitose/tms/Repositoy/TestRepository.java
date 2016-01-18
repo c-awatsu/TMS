@@ -26,7 +26,7 @@ public class TestRepository implements ITestRepository {
 	}
 
 	@Override
-	public int insert(TestItem item) {
+	public boolean insert(TestItem item) {
 		val sql = "insert into test "
 				+ "(classification, step, expected_output, product_id) "
 				+ "values (:1, :2, :3, :4)";
@@ -35,7 +35,19 @@ public class TestRepository implements ITestRepository {
 						.addValue("2", item.getStep())
 						.addValue("3", item.getExpectedOutput())
 						.addValue("4", item.getProductId());
-		return jdbc.update(sql, param);
+		return jdbc.update(sql, param) == 1;
+	}
+
+	@Override
+	public boolean update(TestItem item) {
+		val sql = "update test set classification = :1,step = :2,expected_output = :3 "
+				+ "where product_id = :4";
+		val param = new MapSqlParameterSource()
+			.addValue("1", item.getClassification())
+			.addValue("2", item.getStep())
+			.addValue("3", item.getExpectedOutput())
+			.addValue("4", item.getProductId());
+		return jdbc.update(sql,param) == 1;
 	}
 
 }

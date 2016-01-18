@@ -6,6 +6,7 @@ import jp.ac.chitose.tms.Bean.ProductItem;
 import jp.ac.chitose.tms.Repositoy.IProductRepository;
 import jp.ac.chitose.tms.Repositoy.ITestRepository;
 
+import org.apache.wicket.model.IModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +26,10 @@ public class ProductService implements IProductService {
 	@Override
 	public ProductItem getProductItem(int productId) {
 		return productRepository.fetchProductItem(productId);
+	}
+
+	@Override
+	public boolean insertProductItem(IModel<ProductItem> productNameModel) {
+		return productRepository.insert(productNameModel.getObject().getName());
 	}
 }

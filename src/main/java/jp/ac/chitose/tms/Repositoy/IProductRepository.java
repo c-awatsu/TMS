@@ -8,4 +8,5 @@ public interface IProductRepository {
 	public List<ProductItem> fetchProductItems();
 	public int selectProductItems(String productName);
 	public ProductItem fetchProductItem(int productId);
+	public boolean insert(String name);
 }

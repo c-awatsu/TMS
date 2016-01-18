@@ -5,6 +5,7 @@ import java.util.List;
 import jp.ac.chitose.tms.Bean.TestItem;
 import jp.ac.chitose.tms.Repositoy.ITestRepository;
 
+import org.apache.wicket.model.IModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service
@@ -20,7 +21,16 @@ public class TestService implements ITestService{
 
 	@Override
 	public boolean inputTestItem(TestItem item) {
-		return testRepository.insert(item) == 1;
+		return testRepository.insert(item);
+	}
+
+	@Override
+	public boolean upsert(IModel<TestItem> testItem) {
+		if(testItem.getObject().getTestId() == 0){
+			return testRepository.insert(testItem.getObject());
+		}else{
+			return testRepository.update(testItem.getObject());
+		}
 	}
 
 }

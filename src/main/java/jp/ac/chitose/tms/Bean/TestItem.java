@@ -8,6 +8,8 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 public class TestItem implements Serializable{
+	private static final long serialVersionUID = 42L;
+
 	@NonNull
 	private Integer testId;
 	@NonNull

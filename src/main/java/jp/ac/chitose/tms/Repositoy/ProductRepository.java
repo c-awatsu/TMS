@@ -47,4 +47,12 @@ public class ProductRepository implements IProductRepository {
 		return jdbc.queryForObject(sql, param, mapper);
 	}
 
+	@Override
+	public boolean insert(String name) {
+		val sql = "insert into (name) values (:1)" ;
+		val param = new MapSqlParameterSource()
+						.addValue("1", name);
+		return jdbc.update(sql, param) == 1;
+	}
+
 }

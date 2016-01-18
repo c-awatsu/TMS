@@ -3,21 +3,18 @@ package jp.ac.chitose.tms.ui.Signed;
 import java.util.List;
 
 import jp.ac.chitose.tms.Bean.TestItem;
-import jp.ac.chitose.tms.Event.Behavior.LineLinkBehavior;
 import jp.ac.chitose.tms.Service.IProductService;
 import jp.ac.chitose.tms.Service.ITestRecordService;
 import jp.ac.chitose.tms.Service.ITestService;
 import lombok.val;
 
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.SubmitLink;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -37,8 +34,24 @@ public class ProductPage extends WebPage {
 	ITestRecordService testRecordService;
 
 	public ProductPage(int productId){
-		val inputForm = new Form<Void>("inputForm");
+
+		val testItemsModel = new LoadableDetachableModel<List<TestItem>>() {
+			@Override
+			protected List<TestItem> load() {
+				return testService.fetchTestItems(productId);
+			}
+		};
+
+		val inputForm = new Form <List<TestItem>>("inputForm",testItemsModel);
 		add(inputForm);
+		inputForm.add(new Button("testInput") {
+			@Override
+			public void onSubmit() {
+				System.out.println(testItemsModel);
+				testItemsModel.getObject().stream()
+					.forEach(t -> testService.upsert(new Model<TestItem>(t)));
+			}
+		});
 
 		val productNameModel = new AbstractReadOnlyModel<String>(){
 			@Override
@@ -49,21 +62,16 @@ public class ProductPage extends WebPage {
 
 		add(new Label("title", productNameModel));
 		add(new Label("productName", productNameModel));
-
-		val testItemsModel = new LoadableDetachableModel<List<TestItem>>() {
-			@Override
-			protected List<TestItem> load() {
-				return testService.fetchTestItems(productId);
-			}
-		};
-
-		//TODO 実施結果ページにジャンプする為の手段を作る
-		//Behaviorを使って行全体をリンクボタンにしたい
-		//DataViewに差し替えたい
-		inputForm.add(new ListView<TestItem>("testList",testItemsModel){
+		//TODO 実施結果ページにジャンプする為の手段を作る(idをリンク化？)
+		val testList = new ListView<TestItem>("testList",testItemsModel){
 			@Override
 			protected void populateItem(ListItem<TestItem> item) {
 				val testItem = item.getModelObject();
+				item.setDefaultModel(new CompoundPropertyModel<TestItem>(testItem));
+				item.add(new Label("testId",item.getIndex()+1));
+				item.add(new AjaxEditableLabel<TestItem>("classification").setRequired(true));
+				item.add(new AjaxEditableLabel<TestItem>("step").setRequired(true));
+				item.add(new AjaxEditableLabel<TestItem>("expectedOutput").setRequired(true));
 				item.add(new Label("latestResult", new AbstractReadOnlyModel<String>() {
 					@Override
 					public String getObject() {
@@ -72,59 +80,36 @@ public class ProductPage extends WebPage {
 						return result ? "○":"×";
 					}
 				}));
-				item.setDefaultModel(new CompoundPropertyModel<TestItem>(testItem));
-				item.add(new Label("testId"));
-				item.add(new Label("classification"));
-				item.add(new Label("step"));
-				item.add(new Label("expectedOutput"));
-
-				item.add(new AjaxEventBehavior("onclick"){
-					@Override
-					protected void onEvent(AjaxRequestTarget target) {
-						// TODO テスト項目がクリックされた時の処理
-					}
-				});
-				item.add(new LineLinkBehavior());
-			}
-		});
-
-		val inputFormVisibleModel = new Model<Boolean>();
-		inputFormVisibleModel.setObject(false);
-
-		val inputLine = new WebMarkupContainer("inputLine", new CompoundPropertyModel<TestItem>(new TestItem())){
-			@Override
-			public boolean isVisible() {
-				return inputFormVisibleModel.getObject();
 			}
 		};
-		inputForm.add(inputLine);
+		inputForm.add(testList);
 
-		inputLine.add(new TextField<String>("classification"));
-		inputLine.add(new TextField<String>("step"));
-		inputLine.add(new TextField<String>("expectedOutput"));
-		inputLine.add(new SubmitLink("inputButton", inputForm){
-			@Override
-			public void onSubmit() {
-				val testItem = (TestItem) inputLine.getDefaultModelObject();
-				testItem.setProductId(productId);
-				testService.inputTestItem(testItem);
-				inputLine.setDefaultModelObject(new TestItem());
-			}
-		});
+		val addTestVisibleContlloer = new Model<Boolean>();
+		addTestVisibleContlloer.setObject(true);
 
-		val inputFormChangeVisibleButton = new Link<Void>("inputFormChangeVisibleButton"){
-			@Override
-			public void onClick() {
-				inputFormVisibleModel.setObject(!inputFormVisibleModel.getObject());
+		val addTest =  new AjaxButton("addTest"){
+			protected void onSubmit(AjaxRequestTarget target,Form<?> form) {
+				if(addTestVisibleContlloer.getObject()){
+					testItemsModel.getObject().add(new TestItem());
+					addTestVisibleContlloer.setObject(false);
+					target.add(inputForm);
+				}else{
+					testItemsModel.getObject().remove(testItemsModel.getObject().size()-1);
+					addTestVisibleContlloer.setObject(true);
+					target.add(inputForm);
+				}
 			}
+
 		};
-		add(inputFormChangeVisibleButton);
+		inputForm.add(addTest);
 
-		inputFormChangeVisibleButton.add(new Label("inputFormChangeVisibleButtonLabel", new AbstractReadOnlyModel<String>(){
+		addTest.add(new Label("addTestLabelController",new AbstractReadOnlyModel<String>() {
 			@Override
 			public String getObject() {
-				return inputFormVisibleModel.getObject() ? "-":"+";
+				return addTestVisibleContlloer.getObject() ? "テストを追加":"テストを削除";
 			}
 		}));
+
+
 	}
 }
