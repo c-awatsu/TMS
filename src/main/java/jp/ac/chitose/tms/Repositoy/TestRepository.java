@@ -40,13 +40,15 @@ public class TestRepository implements ITestRepository {
 
 	@Override
 	public boolean update(TestItem item) {
+		System.out.println(item.getTestId());
 		val sql = "update test set classification = :1,step = :2,expected_output = :3 "
-				+ "where product_id = :4";
+				+ "where product_id = :4 and test_id = :5";
 		val param = new MapSqlParameterSource()
 			.addValue("1", item.getClassification())
 			.addValue("2", item.getStep())
 			.addValue("3", item.getExpectedOutput())
-			.addValue("4", item.getProductId());
+			.addValue("4", item.getProductId())
+			.addValue("5",item.getTestId());
 		return jdbc.update(sql,param) == 1;
 	}
 

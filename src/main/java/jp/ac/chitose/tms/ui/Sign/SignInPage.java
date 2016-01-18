@@ -53,6 +53,8 @@ public class SignInPage extends WebPage{
 				session.signIn(sign);
 				if(session.isSignedIn()){
 					setResponsePage(TopPage.class);
+				}else{
+					error(SIGN_ERROR);
 				}
 			}
 		};

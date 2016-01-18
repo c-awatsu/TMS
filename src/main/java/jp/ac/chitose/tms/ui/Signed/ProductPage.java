@@ -3,24 +3,23 @@ package jp.ac.chitose.tms.ui.Signed;
 import java.util.List;
 
 import jp.ac.chitose.tms.Bean.TestItem;
+import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
 import jp.ac.chitose.tms.Service.IProductService;
 import jp.ac.chitose.tms.Service.ITestRecordService;
 import jp.ac.chitose.tms.Service.ITestService;
 import lombok.val;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ProductPage extends WebPage {
@@ -32,26 +31,31 @@ public class ProductPage extends WebPage {
 
 	@SpringBean
 	ITestRecordService testRecordService;
-
+	public static final String NULL_ERROR = "入力を空にすることはできません";
 	public ProductPage(int productId){
+		add(new ErrorAlertPanel("feedback"));
+		val addTestVisibleContlloer = new Model<Boolean>();
+		addTestVisibleContlloer.setObject(true);
+		val testItemsModel = new ListModel<>(testService.fetchTestItems(productId));
 
-		val testItemsModel = new LoadableDetachableModel<List<TestItem>>() {
-			@Override
-			protected List<TestItem> load() {
-				return testService.fetchTestItems(productId);
-			}
-		};
-
-		val inputForm = new Form <List<TestItem>>("inputForm",testItemsModel);
-		add(inputForm);
-		inputForm.add(new Button("testInput") {
+		val inputForm = new Form <List<TestItem>>("inputForm",testItemsModel){
 			@Override
 			public void onSubmit() {
-				System.out.println(testItemsModel);
-				testItemsModel.getObject().stream()
-					.forEach(t -> testService.upsert(new Model<TestItem>(t)));
+				if(getModelObject().get(getModelObject().size()-1).getClassification() == null
+				   |getModelObject().get(getModelObject().size()-1).getExpectedOutput() == null
+				   |getModelObject().get(getModelObject().size()-1).getStep() == null){
+					error(NULL_ERROR);
+				}else{
+					getModelObject().stream()
+						.limit(getModelObject().size())
+						.forEach(g -> testService.update(new Model<TestItem>(g)));
+					testService.insert(new Model<TestItem>(getModelObject().get(getModelObject().size()-1)));
+					addTestVisibleContlloer.setObject(true);
+				}
 			}
-		});
+		};
+		add(inputForm);
+
 
 		val productNameModel = new AbstractReadOnlyModel<String>(){
 			@Override
@@ -63,34 +67,40 @@ public class ProductPage extends WebPage {
 		add(new Label("title", productNameModel));
 		add(new Label("productName", productNameModel));
 		//TODO 実施結果ページにジャンプする為の手段を作る(idをリンク化？)
-		val testList = new ListView<TestItem>("testList",testItemsModel){
+		val testList = new PropertyListView<TestItem>("testList",testItemsModel){
 			@Override
-			protected void populateItem(ListItem<TestItem> item) {
-				val testItem = item.getModelObject();
-				item.setDefaultModel(new CompoundPropertyModel<TestItem>(testItem));
+			protected void populateItem(ListItem<TestItem> item){
+
 				item.add(new Label("testId",item.getIndex()+1));
 				item.add(new AjaxEditableLabel<TestItem>("classification").setRequired(true));
 				item.add(new AjaxEditableLabel<TestItem>("step").setRequired(true));
-				item.add(new AjaxEditableLabel<TestItem>("expectedOutput").setRequired(true));
-				item.add(new Label("latestResult", new AbstractReadOnlyModel<String>() {
-					@Override
-					public String getObject() {
-						val latest = testRecordService.getLatestTestRecord(testItem.getTestId());
-						val result = latest != null ? latest.getResult() : false;
-						return result ? "○":"×";
-					}
+				item.add( new AjaxEditableLabel<TestItem>("expectedOutput").setRequired(true));
+
+				if(testItemsModel.getObject().get(item.getIndex()).getTestId() != null){
+					item.add(new Label("latestResult", new AbstractReadOnlyModel<String>() {
+						@Override
+						public String getObject() {
+							val latest = testRecordService.getLatestTestRecord(testItemsModel.getObject().get(item.getIndex()).getTestId());
+							val result = latest != null ? latest.getResult() : false;
+							return result ? "○":"×";
+						}
 				}));
+				}else/** 追加ボタンが押された時は絶対elseに入る **/{
+					item.add(new Label("latestResult","×"));
+				}
 			}
 		};
 		inputForm.add(testList);
 
-		val addTestVisibleContlloer = new Model<Boolean>();
-		addTestVisibleContlloer.setObject(true);
 
-		val addTest =  new AjaxButton("addTest"){
-			protected void onSubmit(AjaxRequestTarget target,Form<?> form) {
+		val addTest =  new AjaxLink<Void>("addTest"){
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
 				if(addTestVisibleContlloer.getObject()){
-					testItemsModel.getObject().add(new TestItem());
+					TestItem newTest = new TestItem();
+					newTest.setProductId(productId);
+					testItemsModel.getObject().add(newTest);
 					addTestVisibleContlloer.setObject(false);
 					target.add(inputForm);
 				}else{
@@ -99,14 +109,14 @@ public class ProductPage extends WebPage {
 					target.add(inputForm);
 				}
 			}
-
 		};
+
 		inputForm.add(addTest);
 
 		addTest.add(new Label("addTestLabelController",new AbstractReadOnlyModel<String>() {
 			@Override
 			public String getObject() {
-				return addTestVisibleContlloer.getObject() ? "テストを追加":"テストを削除";
+				return addTestVisibleContlloer.getObject() ? "テストを追加":"キャンセル";
 			}
 		}));
 

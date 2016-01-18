@@ -2,11 +2,9 @@ package jp.ac.chitose.tms.Bean;
 
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 @Data
-@AllArgsConstructor
 public class TestItem implements Serializable{
 	private static final long serialVersionUID = 42L;
 
@@ -22,6 +20,6 @@ public class TestItem implements Serializable{
 	private Integer productId;
 
 	public TestItem(){
-		this(0, "", "", "", 0);
+
 	}
 }
