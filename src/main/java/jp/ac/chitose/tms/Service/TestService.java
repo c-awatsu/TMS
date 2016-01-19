@@ -34,4 +34,9 @@ public class TestService implements ITestService{
 		return testRepository.insert(testItem.getObject());
 	}
 
+	@Override
+	public TestItem fetchTestItem(int testId) {
+		return null;
+	}
+
 }

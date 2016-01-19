@@ -119,6 +119,5 @@ public class ProductPage extends WebPage {
 			}
 		}));
 
-
 	}
 }
