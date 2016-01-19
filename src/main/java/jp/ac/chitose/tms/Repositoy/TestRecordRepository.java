@@ -1,5 +1,7 @@
 package jp.ac.chitose.tms.Repositoy;
 
+import java.util.List;
+
 import jp.ac.chitose.tms.Bean.TestRecordItem;
 import lombok.val;
 
@@ -35,6 +37,15 @@ public class TestRecordRepository implements ITestRecordReposiory {
 						.addValue("1", testId);
 		val num = jdbc.queryForObject(sql, param,Integer.class);
 		return num == 0;
+	}
+
+	@Override
+	public List<TestRecordItem> fetchTestRecordItems(int testId) {
+		val sql = "select * from test_record where test_record_id = :1";
+		val param = new MapSqlParameterSource()
+						.addValue("1", testId);
+		val mapper = new BeanPropertyRowMapper<TestRecordItem>(TestRecordItem.class);
+		return jdbc.query(sql, param, mapper);
 	}
 
 }

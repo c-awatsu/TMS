@@ -36,7 +36,7 @@ public class TestService implements ITestService{
 
 	@Override
 	public TestItem fetchTestItem(int testId) {
-		return null;
+		return testRepository.fetchTestItem(testId);
 	}
 
 }
