@@ -20,18 +20,12 @@ public class TestService implements ITestService{
 	}
 
 	@Override
-	public boolean inputTestItem(TestItem item) {
-		return testRepository.insert(item);
-	}
-
-	@Override
-	public boolean update(IModel<TestItem> testItem) {
+	public boolean upsert(IModel<TestItem> testItem) {
+		if(testItem.getObject().getTestId() != null){
+			return testRepository.insert(testItem.getObject());
+		}else{
 			return testRepository.update(testItem.getObject());
-	}
-
-	@Override
-	public boolean insert(IModel<TestItem> testItem) {
-		return testRepository.insert(testItem.getObject());
+		}
 	}
 
 }

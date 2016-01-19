@@ -47,9 +47,7 @@ public class ProductPage extends WebPage {
 					error(NULL_ERROR);
 				}else{
 					getModelObject().stream()
-						.limit(getModelObject().size())
-						.forEach(g -> testService.update(new Model<TestItem>(g)));
-					testService.insert(new Model<TestItem>(getModelObject().get(getModelObject().size()-1)));
+						.forEach(g -> testService.upsert(new Model<TestItem>(g)));
 					addTestVisibleContlloer.setObject(true);
 				}
 			}

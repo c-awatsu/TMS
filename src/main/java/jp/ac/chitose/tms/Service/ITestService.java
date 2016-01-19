@@ -8,7 +8,5 @@ import org.apache.wicket.model.IModel;
 
 public interface ITestService {
 	public List<TestItem> fetchTestItems(int productId);
-	public boolean inputTestItem(TestItem item);
-	public boolean update(IModel<TestItem> testItem);
-	public boolean insert(IModel<TestItem> testItem);
+	public boolean upsert(IModel<TestItem> testItem);
 }
