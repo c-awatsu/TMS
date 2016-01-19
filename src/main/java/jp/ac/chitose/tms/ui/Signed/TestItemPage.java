@@ -35,8 +35,8 @@ public class TestItemPage extends WebPage {
 		testItem.add(new Label("expectedOutput"));
 		add(testItem);
 
-		val RecordListModel = new ListModel<TestRecordItem>(null);//TODO TestRecordのListを入れる
-		val testRecordList = new PropertyListView<TestRecordItem>("", RecordListModel){
+		val RecordListModel = new ListModel<TestRecordItem>(testRecordService.fetchTestRecordItems(testId));
+		val testRecordList = new PropertyListView<TestRecordItem>("testRecordList", RecordListModel){
 			@Override
 			protected void populateItem(ListItem<TestRecordItem> item) {
 				item.add(new Label("testRecordId"));
@@ -47,6 +47,5 @@ public class TestItemPage extends WebPage {
 			}
 		};
 		add(testRecordList);
-
 	}
 }
