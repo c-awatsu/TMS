@@ -2,6 +2,7 @@ package jp.ac.chitose.tms.ui.Signed;
 
 import jp.ac.chitose.tms.Bean.TestItem;
 import jp.ac.chitose.tms.Bean.TestRecordItem;
+import jp.ac.chitose.tms.Service.ISignService;
 import jp.ac.chitose.tms.Service.ITestRecordService;
 import jp.ac.chitose.tms.Service.ITestService;
 import lombok.val;
@@ -23,6 +24,9 @@ public class TestItemPage extends WebPage {
 	private ITestService testService;
 
 	@SpringBean
+	private ISignService signService;
+
+	@SpringBean
 	private ITestRecordService testRecordService;
 
 	public TestItemPage(){
@@ -39,10 +43,11 @@ public class TestItemPage extends WebPage {
 		val testRecordList = new PropertyListView<TestRecordItem>("testRecordList", RecordListModel){
 			@Override
 			protected void populateItem(ListItem<TestRecordItem> item) {
+				val testRecordItem = item.getModelObject();
 				item.add(new Label("testRecordId"));
 				item.add(new Label("testDate"));
-				item.add(new Label("testerId"));
-				item.add(new Label("result"));
+				item.add(new Label("testerName", signService.fetchNickName(testRecordItem.getTesterId())));
+				item.add(new Label("result", testRecordItem.getResult() ? "○":"×"));
 				item.add(new Label("note"));
 			}
 		};

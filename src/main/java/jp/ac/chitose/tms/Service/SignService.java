@@ -54,4 +54,11 @@ public class SignService implements ISignService {
 		return flag;
 	}
 
+	@Override
+	public String fetchNickName(int accountId) {
+		return signRepository.fetchNickName(accountId);
+	}
+
+
+
 }
