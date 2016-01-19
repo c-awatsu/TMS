@@ -92,7 +92,6 @@ public class ProductPage extends WebPage {
 		};
 		inputForm.add(testList);
 
-
 		val addTest =  new AjaxLink<Void>("addTest"){
 
 			@Override
