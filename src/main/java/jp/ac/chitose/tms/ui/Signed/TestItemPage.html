@@ -45,5 +45,29 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<form wicket:id="testRecordInputForm">
+		<table border="1">
+			<thead>
+				<tr>
+					<td></td>
+					<td>実施日</td>
+					<td>担当者</td>
+					<td>結果</td>
+					<td>備考</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="submit" value="登録" /></td>
+					<td><input value="2012-02-16" wicket:id="testDate"/></td>
+					<td wicket:id="testerName"></td>
+					<td><input type="checkbox"  wicket:id="result" /></td>
+					<td><input type="text"  wicket:id="note" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+
 </body>
 </html>
