@@ -27,7 +27,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/CA/.m2/repository/org/webjars/bootstrap/3.3.5/bootstrap-3.3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/CA/Desktop/pleiades/pleiades/eclipse/lombok.jar"/>
+	<classpathentry kind="lib" path="C:/pleiades/eclipse/lombok.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
