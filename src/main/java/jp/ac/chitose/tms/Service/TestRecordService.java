@@ -1,5 +1,7 @@
 package jp.ac.chitose.tms.Service;
 
+import java.util.List;
+
 import jp.ac.chitose.tms.Bean.TestItem;
 import jp.ac.chitose.tms.Bean.TestProgressItem;
 import jp.ac.chitose.tms.Bean.TestRecordItem;
@@ -49,5 +51,9 @@ public class TestRecordService implements ITestRecordService{
 		else return trRepository.selectLatestResult(testId);
 	}
 
+	@Override
+	public List<TestRecordItem> fetchTestRecordItems(int testId){
+		return trRepository.fetchTestRecordItems(testId);
+	}
 
 }

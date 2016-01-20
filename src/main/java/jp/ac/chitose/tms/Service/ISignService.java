@@ -8,4 +8,5 @@ public interface ISignService {
 	public boolean createAccount(SignUp signUp);
 	public Sign authenticate(SignIn sign);
 	public boolean exsitsUser();
+	public String fetchNickName(int accountId);
 }

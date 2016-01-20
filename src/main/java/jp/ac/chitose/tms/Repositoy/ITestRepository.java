@@ -9,4 +9,5 @@ public interface ITestRepository {
 	public List<TestItem> fetchTestItems(int productId);
 	public boolean insert(TestItem item);
 	public boolean update(TestItem item);
+	public TestItem fetchTestItem(int testId);
 }

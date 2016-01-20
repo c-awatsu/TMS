@@ -52,4 +52,13 @@ public class TestRepository implements ITestRepository {
 		return jdbc.update(sql,param) == 1;
 	}
 
+	@Override
+	public TestItem fetchTestItem(int testId) {
+		val sql = "select * from test where test_id = :1";
+		val param = new MapSqlParameterSource()
+						.addValue("1", testId);
+		val mapper = new BeanPropertyRowMapper<TestItem>(TestItem.class);
+		return jdbc.queryForObject(sql, param, mapper);
+	}
+
 }

@@ -9,4 +9,5 @@ public interface ISignRepository {
 	public int insert(String loginId,String passphrase,String nickName);
 	public SignIn fetchAccountId(String loginId,String passphrase);
 	public List<Sign> fetchAccountId();
+	public String fetchNickName(int accountid);
 }

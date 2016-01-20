@@ -51,6 +51,12 @@ public class SignRepository implements ISignRepository{
 		return jdbc.query(sql, mapper);
 	}
 
-
+	@Override
+	public String fetchNickName(int accountid) {
+		val sql = "select nickname from account where account_id = :1";
+		val param  = new MapSqlParameterSource()
+						.addValue("1", accountid);
+		return jdbc.queryForObject(sql, param, String.class);
+	}
 
 }

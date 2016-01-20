@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta charset="UTF-8">
+<title>テストしようぜ！！！！！</title>
+</head>
+<body>
+	<table border="1">
+		<thead>
+			<tr>
+				<td>テスト番号</td>
+				<td>種別</td>
+				<td>実行ステップ</td>
+				<td>期待される出力</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr wicket:id="testItem">
+				<td wicket:id="testId"></td>
+				<td wicket:id="classification"></td>
+				<td wicket:id="step"></td>
+				<td wicket:id="expectedOutput"></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table border="1">
+		<thead>
+			<tr>
+				<td>実施番号</td>
+				<td>実施日</td>
+				<td>担当者</td>
+				<td>結果</td>
+				<td>備考</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr wicket:id="testRecordList">
+				<td wicket:id="testRecordId"></td>
+				<td wicket:id="testDate"></td>
+				<td wicket:id="testerName"></td>
+				<td wicket:id="result"></td>
+				<td wicket:id="note"></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<form wicket:id="testRecordInputForm">
+		<table border="1">
+			<thead>
+				<tr>
+					<td></td>
+					<td>実施日</td>
+					<td>担当者</td>
+					<td>結果</td>
+					<td>備考</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="submit" value="登録" /></td>
+					<td><input value="2012-02-16" wicket:id="testDate"/></td>
+					<td wicket:id="testerName"></td>
+					<td><input type="checkbox"  wicket:id="result" /></td>
+					<td><input type="text"  wicket:id="note" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+
+</body>
+</html>
