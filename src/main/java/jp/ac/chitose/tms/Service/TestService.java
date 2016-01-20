@@ -21,7 +21,7 @@ public class TestService implements ITestService{
 
 	@Override
 	public boolean upsert(IModel<TestItem> testItem) {
-		if(testItem.getObject().getTestId() != null){
+		if(testItem.getObject().getTestId() == null){
 			return testRepository.insert(testItem.getObject());
 		}else{
 			return testRepository.update(testItem.getObject());

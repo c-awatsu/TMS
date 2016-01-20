@@ -46,9 +46,11 @@ public class ProductPage extends WebPage {
 				   |getModelObject().get(getModelObject().size()-1).getStep() == null){
 					error(NULL_ERROR);
 				}else{
+					System.out.println(getModelObject());
 					getModelObject().stream()
 						.forEach(g -> testService.upsert(new Model<TestItem>(g)));
 					addTestVisibleContlloer.setObject(true);
+					testItemsModel.setObject(testService.fetchTestItems(productId));
 				}
 			}
 		};
@@ -70,9 +72,9 @@ public class ProductPage extends WebPage {
 			protected void populateItem(ListItem<TestItem> item){
 
 				item.add(new Label("testId",item.getIndex()+1));
-				item.add(new AjaxEditableLabel<TestItem>("classification").setRequired(true));
-				item.add(new AjaxEditableLabel<TestItem>("step").setRequired(true));
-				item.add( new AjaxEditableLabel<TestItem>("expectedOutput").setRequired(true));
+				item.add(new AjaxEditableLabel<TestItem>("classification"));
+				item.add(new AjaxEditableLabel<TestItem>("step"));
+				item.add( new AjaxEditableLabel<TestItem>("expectedOutput"));
 
 				if(testItemsModel.getObject().get(item.getIndex()).getTestId() != null){
 					item.add(new Label("latestResult", new AbstractReadOnlyModel<String>() {
