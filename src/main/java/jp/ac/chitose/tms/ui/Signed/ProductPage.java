@@ -14,6 +14,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.wicketstuff.annotation.mount.MountPath;
 
 import jp.ac.chitose.tms.Bean.TestItem;
 import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
@@ -21,7 +22,7 @@ import jp.ac.chitose.tms.Service.IProductService;
 import jp.ac.chitose.tms.Service.ITestRecordService;
 import jp.ac.chitose.tms.Service.ITestService;
 import lombok.val;
-
+@MountPath("/productPage")
 public class ProductPage extends WebPage {
 	@SpringBean
 	IProductService productService;
