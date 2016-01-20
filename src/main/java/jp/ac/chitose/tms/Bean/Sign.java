@@ -13,17 +13,20 @@ public class Sign implements Serializable {
 	private static final long serialVersionUID = 4069895122685977917L;
 
 	@NonNull
-	private Integer accountId;
+	private Integer AccountId;
 
 	@NonNull
 	private String loginId;
+
+	@NonNull
+	private String nickname;
 
 
 	/**
 	 * Constructor.
 	 */
 	public Sign() {
-		this(0, "");
+		this(0,"","");
 	}
 
 }

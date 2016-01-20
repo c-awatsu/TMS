@@ -1,12 +1,6 @@
 package jp.ac.chitose.tms.ui.Sign;
 
 import static jp.ac.chitose.tms.Constant.Validation.*;
-import jp.ac.chitose.tms.WicketSession;
-import jp.ac.chitose.tms.Bean.SignIn;
-import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
-import jp.ac.chitose.tms.Service.ISignService;
-import jp.ac.chitose.tms.ui.Signed.TopPage;
-import lombok.val;
 
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.HTML5Attributes;
@@ -20,6 +14,13 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.wicketstuff.annotation.mount.MountPath;
+
+import jp.ac.chitose.tms.WicketSession;
+import jp.ac.chitose.tms.Bean.SignIn;
+import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
+import jp.ac.chitose.tms.Service.ISignService;
+import jp.ac.chitose.tms.ui.Signed.TopPage;
+import lombok.val;
 
 @MountPath("/SignInPage")
 public class SignInPage extends WebPage{
@@ -49,9 +50,8 @@ public class SignInPage extends WebPage{
 			protected void onSubmit() {
 				super.onSubmit();
 				val sign = signService.authenticate(getModelObject());
-				WicketSession session = new WicketSession(getRequest());
-				session.signIn(sign);
-				if(session.isSignedIn()){
+				WicketSession.get().signIn(sign);
+				if(WicketSession.get().isSignedIn()){
 					setResponsePage(TopPage.class);
 				}else{
 					error(SIGN_ERROR);

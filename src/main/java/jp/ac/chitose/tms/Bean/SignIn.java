@@ -12,6 +12,9 @@ public class SignIn implements Serializable{
 	private static final long serialVersionUID = -4301784030025895482L;
 
 	@NonNull
+	private Integer accountId;
+
+	@NonNull
 	private String loginId;
 
 	@NonNull
@@ -24,6 +27,6 @@ public class SignIn implements Serializable{
 	 * Constructor.
 	 */
 	public SignIn(){
-		this("","","");
+		this(0,"","","");
 	}
 }
