@@ -3,6 +3,7 @@ package jp.ac.chitose.tms.ui.Signed;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import jp.ac.chitose.tms.WicketSession;
 import jp.ac.chitose.tms.Bean.TestItem;
@@ -24,7 +25,10 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -68,6 +72,7 @@ public class TestItemPage extends WebPage {
 		testItem.add(new Label("expectedOutput"));
 		add(testItem);
 
+		val deleteMap = new HashMap<Integer, Model<Boolean>>();
 		val sdf = new SimpleDateFormat("yyyy/MM/dd");
 		val testRecordListModel = new ListModel<>(
 				testRecordService.fetchTestRecordItems(testId));
@@ -83,9 +88,42 @@ public class TestItemPage extends WebPage {
 				item.add(new Label("result", testRecordItem.getResult() ? "○"
 						: "×"));
 				item.add(new Label("note"));
+
+				val deleteFlag = new Model<Boolean>(false);
+				val deleteCheck = new Link<Boolean>("deleteCheck", deleteFlag){
+					@Override
+					public void onClick() {
+						setModelObject(!getModelObject());//flagを反転させる
+					}
+				};
+				deleteCheck.add(new Label("deleteLabel", new AbstractReadOnlyModel<String>(){
+					@Override
+					public String getObject() {
+						return deleteCheck.getModelObject() ? "■":"□";
+					}
+				}));
+				item.add(deleteCheck);
+
+				deleteMap.put(testRecordItem.getTestRecordId(), deleteFlag);
 			}
 		};
+		testRecordList.setReuseItems(true);
 		add(testRecordList);
+
+		val deleteButton = new Link<Void>("deleteButton"){
+			@Override
+			public void onClick() {
+				for(Integer key : deleteMap.keySet()){
+					if(deleteMap.get(key).getObject()){
+						testRecordService.delete(key);
+					}
+				}
+				deleteMap.clear();
+				testRecordListModel.setObject(testRecordService.fetchTestRecordItems(testId));
+				testRecordList.removeAll();
+			}
+		};
+		add(deleteButton);
 
 		val session = (WicketSession)WebSession.get();
 		val testRecordInputForm = new Form<TestRecordItem>(
