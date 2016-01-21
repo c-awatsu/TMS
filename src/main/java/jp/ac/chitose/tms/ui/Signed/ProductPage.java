@@ -2,6 +2,14 @@ package jp.ac.chitose.tms.ui.Signed;
 
 import java.util.List;
 
+import jp.ac.chitose.tms.WicketSession;
+import jp.ac.chitose.tms.Bean.TestItem;
+import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
+import jp.ac.chitose.tms.Service.IProductService;
+import jp.ac.chitose.tms.Service.ITestRecordService;
+import jp.ac.chitose.tms.Service.ITestService;
+import lombok.val;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;
@@ -16,14 +24,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
-
-import jp.ac.chitose.tms.WicketSession;
-import jp.ac.chitose.tms.Bean.TestItem;
-import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
-import jp.ac.chitose.tms.Service.IProductService;
-import jp.ac.chitose.tms.Service.ITestRecordService;
-import jp.ac.chitose.tms.Service.ITestService;
-import lombok.val;
 @MountPath("/productPage")
 public class ProductPage extends WebPage {
 	@SpringBean
@@ -81,10 +81,10 @@ public class ProductPage extends WebPage {
 
 		add(new Label("title", productNameModel));
 		add(new Label("productName", productNameModel));
-		//TODO 実施結果ページにジャンプする為の手段を作る(idをリンク化？)
 		val testList = new PropertyListView<TestItem>("testList",testItemsModel){
 			@Override
 			protected void populateItem(ListItem<TestItem> item){
+				val testItem = item.getModelObject();
 
 				item.add(new Label("testId",item.getIndex()+1));
 				item.add(new AjaxEditableLabel<TestItem>("classification"));
@@ -103,6 +103,12 @@ public class ProductPage extends WebPage {
 				}else/** 追加ボタンが押された時は絶対elseに入る **/{
 					item.add(new Label("latestResult","×"));
 				}
+				item.add(new Link<Void>("testRecord"){
+					@Override
+					public void onClick() {
+						setResponsePage(new TestItemPage(testItem.getTestId()));
+					}
+				});
 			}
 		};
 		inputForm.add(testList);
