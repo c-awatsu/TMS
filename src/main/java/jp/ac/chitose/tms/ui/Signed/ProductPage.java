@@ -25,7 +25,7 @@ import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 @MountPath("/productPage")
-public class ProductPage extends WebPage {
+public class ProductPage extends AbstractSignedPage {
 	@SpringBean
 	IProductService productService;
 

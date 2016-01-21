@@ -16,7 +16,6 @@ import lombok.val;
 
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
@@ -28,14 +27,11 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.annotation.mount.MountPath;
 
-@MountPath("/test")
-public class TestItemPage extends WebPage {
+public class TestItemPage extends AbstractSignedPage {
 
 	@SpringBean
 	private ITestService testService;
