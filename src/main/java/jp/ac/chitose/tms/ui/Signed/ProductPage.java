@@ -8,6 +8,7 @@ import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -47,7 +48,6 @@ public class ProductPage extends WebPage {
 				   |getModelObject().get(getModelObject().size()-1).getStep() == null){
 					error(NULL_ERROR);
 				}else{
-					System.out.println(getModelObject());
 					getModelObject().stream()
 						.forEach(g -> testService.upsert(new Model<TestItem>(g)));
 					addTestVisibleContlloer.setObject(true);
@@ -119,6 +119,13 @@ public class ProductPage extends WebPage {
 				return addTestVisibleContlloer.getObject() ? "テストを追加":"キャンセル";
 			}
 		}));
+		add(new Link<Void>("backTopPage"){
 
+			@Override
+			public void onClick() {
+				setResponsePage(new TopPage());
+			}
+
+		});
 	}
 }
