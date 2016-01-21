@@ -1,7 +1,10 @@
 package jp.ac.chitose.tms.ui.Signed;
 
-import java.sql.Date;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import jp.ac.chitose.tms.WicketSession;
 import jp.ac.chitose.tms.Bean.TestItem;
 import jp.ac.chitose.tms.Bean.TestRecordItem;
 import jp.ac.chitose.tms.Service.ISignService;
@@ -18,8 +21,10 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.util.ListModel;
+import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
@@ -35,13 +40,13 @@ public class TestItemPage extends WebPage {
 	@SpringBean
 	private ITestRecordService testRecordService;
 
-	// テスト用コンストラクタ あとでけす
+	// テスト用コンストラクタ TODO あとでけす
 	public TestItemPage() {
 		this(1);
 	}
 
 	public TestItemPage(final int testId) {
-
+		add(new FeedbackPanel("feedback"));
 		val testItem = new WebMarkupContainer("testItem",
 				new CompoundPropertyModel<TestItem>(
 						testService.fetchTestItem(testId)));
@@ -51,14 +56,16 @@ public class TestItemPage extends WebPage {
 		testItem.add(new Label("expectedOutput"));
 		add(testItem);
 
+		val sdf = new SimpleDateFormat("yyyy/MM/dd");
+		val testRecordListModel = new ListModel<>(
+				testRecordService.fetchTestRecordItems(testId));
 		val testRecordList = new PropertyListView<TestRecordItem>(
-				"testRecordList", new ListModel<TestRecordItem>(
-						testRecordService.fetchTestRecordItems(testId))) {
+				"testRecordList", testRecordListModel) {
 			@Override
 			protected void populateItem(ListItem<TestRecordItem> item) {
 				val testRecordItem = item.getModelObject();
 				item.add(new Label("testRecordId"));
-				item.add(new Label("testDate"));
+				item.add(new Label("testDate", sdf.format(testRecordItem.getTestDate())));
 				item.add(new Label("testerName", signService
 						.fetchNickName(testRecordItem.getTesterId())));
 				item.add(new Label("result", testRecordItem.getResult() ? "○"
@@ -68,24 +75,25 @@ public class TestItemPage extends WebPage {
 		};
 		add(testRecordList);
 
+		val session = (WicketSession)WebSession.get();
 		val testRecordInputForm = new Form<TestRecordItem>(
 				"testRecordInputForm",
 				new CompoundPropertyModel<TestRecordItem>(new TestRecordItem(0,
-						new Date(0), 1, false, "", testId))) {//TODO testerIdをセッションから取ってくる
+						new Date(), session.getAccountId(), false, "", testId))) {
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
 				val testRecordItem = getModelObject();
-				System.out.println("あおおおうういいえええあ"
-						+ testRecordItem.getTestDate().toString());
+				testRecordService.insert(testRecordItem);
+				testRecordListModel.setObject(testRecordService.fetchTestRecordItems(testId));
 			}
 		};
-		testRecordInputForm.add(new DateTextField("testDate", "yyyy-mm-dd"));
+		testRecordInputForm.add(new DateTextField("testDate", "yyyy/MM/dd"));
 		testRecordInputForm.add(new Label("testerName", signService
 				.fetchNickName(testRecordInputForm.getModelObject()
 						.getTesterId())));
 		testRecordInputForm.add(new CheckBox("result"));
-		testRecordInputForm.add(new RequiredTextField<String>("note"));
+		testRecordInputForm.add(new RequiredTextField<String>("note"));//TODO 空入力を許容できるよう変更する
 		add(testRecordInputForm);
 
 	}

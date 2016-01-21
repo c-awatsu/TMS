@@ -56,4 +56,9 @@ public class TestRecordService implements ITestRecordService{
 		return trRepository.fetchTestRecordItems(testId);
 	}
 
+	@Override
+	public boolean insert(TestRecordItem testRecordItem) {
+		return trRepository.insert(testRecordItem) != 0;//更新件数が0件ならfalse
+	}
+
 }

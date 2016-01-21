@@ -41,11 +41,24 @@ public class TestRecordRepository implements ITestRecordReposiory {
 
 	@Override
 	public List<TestRecordItem> fetchTestRecordItems(int testId) {
-		val sql = "select * from test_record where test_record_id = :1";
+		val sql = "select * from test_record where test_id = :1";
 		val param = new MapSqlParameterSource()
 						.addValue("1", testId);
 		val mapper = new BeanPropertyRowMapper<TestRecordItem>(TestRecordItem.class);
 		return jdbc.query(sql, param, mapper);
+	}
+
+	@Override
+	public int insert(TestRecordItem testRecordItem) {
+		val sql = "insert into test_record (test_date, tester_id, result, note, test_id) "
+				+ "values (:1, :2, :3, :4, :5)";
+		val param = new MapSqlParameterSource()
+						.addValue("1", testRecordItem.getTestDate())
+						.addValue("2", testRecordItem.getTesterId())
+						.addValue("3", testRecordItem.getResult())
+						.addValue("4", testRecordItem.getNote())
+						.addValue("5", testRecordItem.getTestId());
+		return jdbc.update(sql, param);
 	}
 
 }

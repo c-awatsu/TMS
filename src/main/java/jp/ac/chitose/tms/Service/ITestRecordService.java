@@ -9,4 +9,5 @@ public interface ITestRecordService {
 	public TestProgressItem getTestProgress(Integer productId);
 	public TestRecordItem getLatestTestRecord(int testId);
 	public List<TestRecordItem> fetchTestRecordItems(int testId);
+	public boolean insert(TestRecordItem testRecordItem);
 }

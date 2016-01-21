@@ -9,4 +9,5 @@ public interface ITestRecordReposiory {
 	public TestRecordItem selectLatestResult(int testId);
 	public boolean isEmpty(int testId);
 	public List<TestRecordItem> fetchTestRecordItems(int testId);
+	public int insert(TestRecordItem testRecordItem);
 }
