@@ -10,6 +10,7 @@ import jp.ac.chitose.tms.Bean.TestRecordItem;
 import jp.ac.chitose.tms.Service.ISignService;
 import jp.ac.chitose.tms.Service.ITestRecordService;
 import jp.ac.chitose.tms.Service.ITestService;
+import jp.ac.chitose.tms.ui.Sign.SignInPage;
 import lombok.val;
 
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -19,6 +20,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -40,13 +42,23 @@ public class TestItemPage extends WebPage {
 	@SpringBean
 	private ITestRecordService testRecordService;
 
-	// テスト用コンストラクタ TODO あとでけす
-	public TestItemPage() {
-		this(1);
-	}
-
-	public TestItemPage(final int testId) {
+	public TestItemPage(final int testId, final int productId) {
 		add(new FeedbackPanel("feedback"));
+
+		add(new Link<Void>("logout"){
+			@Override
+			public void onClick() {
+				setResponsePage(SignInPage.class);
+			}
+		});
+
+		add(new Link<Void>("pageBack"){
+			@Override
+			public void onClick() {
+				setResponsePage(new ProductPage(productId));
+			}
+		});
+
 		val testItem = new WebMarkupContainer("testItem",
 				new CompoundPropertyModel<TestItem>(
 						testService.fetchTestItem(testId)));
@@ -64,7 +76,7 @@ public class TestItemPage extends WebPage {
 			@Override
 			protected void populateItem(ListItem<TestRecordItem> item) {
 				val testRecordItem = item.getModelObject();
-				item.add(new Label("testRecordId"));
+				item.add(new Label("testRecordId", item.getIndex() + 1));
 				item.add(new Label("testDate", sdf.format(testRecordItem.getTestDate())));
 				item.add(new Label("testerName", signService
 						.fetchNickName(testRecordItem.getTesterId())));

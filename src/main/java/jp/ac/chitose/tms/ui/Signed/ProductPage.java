@@ -106,7 +106,7 @@ public class ProductPage extends WebPage {
 				item.add(new Link<Void>("testRecord"){
 					@Override
 					public void onClick() {
-						setResponsePage(new TestItemPage(testItem.getTestId()));
+						setResponsePage(new TestItemPage(testItem.getTestId(), productId));
 					}
 				});
 			}
