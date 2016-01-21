@@ -8,20 +8,23 @@ import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.wicketstuff.annotation.mount.MountPath;
 
+import jp.ac.chitose.tms.WicketSession;
 import jp.ac.chitose.tms.Bean.TestItem;
 import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
 import jp.ac.chitose.tms.Service.IProductService;
 import jp.ac.chitose.tms.Service.ITestRecordService;
 import jp.ac.chitose.tms.Service.ITestService;
 import lombok.val;
-
+@MountPath("/productPage")
 public class ProductPage extends WebPage {
 	@SpringBean
 	IProductService productService;
@@ -32,8 +35,21 @@ public class ProductPage extends WebPage {
 	@SpringBean
 	ITestRecordService testRecordService;
 	public static final String NULL_ERROR = "入力を空にすることはできません";
+
 	public ProductPage(int productId){
+
+		add(new Link<Void>("logout"){
+
+			@Override
+			public void onClick() {
+				WicketSession.get().invalidate();
+				setResponsePage(getApplication().getHomePage());
+			}
+
+		});
+
 		add(new ErrorAlertPanel("feedback"));
+
 		val addTestVisibleContlloer = new Model<Boolean>();
 		addTestVisibleContlloer.setObject(true);
 		val testItemsModel = new ListModel<>(testService.fetchTestItems(productId));
@@ -46,7 +62,6 @@ public class ProductPage extends WebPage {
 				   |getModelObject().get(getModelObject().size()-1).getStep() == null){
 					error(NULL_ERROR);
 				}else{
-					System.out.println(getModelObject());
 					getModelObject().stream()
 						.forEach(g -> testService.upsert(new Model<TestItem>(g)));
 					addTestVisibleContlloer.setObject(true);
@@ -118,6 +133,13 @@ public class ProductPage extends WebPage {
 				return addTestVisibleContlloer.getObject() ? "テストを追加":"キャンセル";
 			}
 		}));
+		add(new Link<Void>("backTopPage"){
 
+			@Override
+			public void onClick() {
+				setResponsePage(new TopPage());
+			}
+
+		});
 	}
 }

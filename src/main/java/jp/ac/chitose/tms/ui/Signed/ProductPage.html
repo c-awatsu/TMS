@@ -6,34 +6,44 @@
 <title wicket:id="title">製品名</title>
 </head>
 <body>
-	<div wicket:id = "feedback"></div>
-	<p>各テストの各項目(最終結果とテスト番号以外)をクリックすると編集できます<p>
-	<div wicket:id="productName">製品名</div>
+	<div align = "right">
+		<a href = # wicket:id = "logout">ログアウト</a>
+	</div>
+	<div align="center">
+		<div wicket:id="feedback"></div>
+		<p>各項目(最終結果とテスト番号以外)をクリックすると編集できます
+		<p>
+		<div wicket:id="productName">製品名</div>
+		<br>
 		<form wicket:id="inputForm">
-		<table border="1">
-			<thead>
-				<tr>
-					<td>テスト番号</td>
-					<td>種別</td>
-					<td>実行ステップ</td>
-					<td>期待される出力</td>
-					<td>最終結果</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr wicket:id="testList">
-					<td wicket:id="testId">1</td>
-					<td wicket:id="classification">正常系</td>
-					<td wicket:id="step">1.「出席を提出する」ボタンをクリックする</td>
-					<td wicket:id="expectedOutput">入力フォームが表示される</td>
-					<td wicket:id="latestResult">○</td>
-				</tr>
-			</tbody>
-		</table>
-	<button wicket:id="addTest">
-		<span wicket:id="addTestLabelController">+</span>
-	</button>
-	<input type = "submit"value = "登録"/>
+			<table border="1">
+				<thead>
+					<tr>
+						<td>テスト番号</td>
+						<td>種別</td>
+						<td>実行ステップ</td>
+						<td>期待される出力</td>
+						<td>最終結果</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="testList">
+						<td wicket:id="testId">1</td>
+						<td wicket:id="classification">正常系</td>
+						<td wicket:id="step">1.「出席を提出する」ボタンをクリックする</td>
+						<td wicket:id="expectedOutput">入力フォームが表示される</td>
+						<td wicket:id="latestResult">○</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			<button wicket:id="addTest">
+				<span wicket:id="addTestLabelController">+</span>
+			</button>
+			<input type="submit" value="登録" />
 		</form>
+		<br>
+		<a href = # wicket:id ="backTopPage">製品選択ページに戻る</a>
+	</div>
 </body>
 </html>
