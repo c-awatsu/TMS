@@ -17,6 +17,7 @@ import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
+import jp.ac.chitose.tms.WicketSession;
 import jp.ac.chitose.tms.Bean.TestItem;
 import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
 import jp.ac.chitose.tms.Service.IProductService;
@@ -34,8 +35,21 @@ public class ProductPage extends WebPage {
 	@SpringBean
 	ITestRecordService testRecordService;
 	public static final String NULL_ERROR = "入力を空にすることはできません";
+
 	public ProductPage(int productId){
+
+		add(new Link<Void>("logout"){
+
+			@Override
+			public void onClick() {
+				WicketSession.get().invalidate();
+				setResponsePage(getApplication().getHomePage());
+			}
+
+		});
+
 		add(new ErrorAlertPanel("feedback"));
+
 		val addTestVisibleContlloer = new Model<Boolean>();
 		addTestVisibleContlloer.setObject(true);
 		val testItemsModel = new ListModel<>(testService.fetchTestItems(productId));

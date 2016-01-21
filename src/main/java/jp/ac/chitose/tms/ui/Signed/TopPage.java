@@ -12,6 +12,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
+import jp.ac.chitose.tms.WicketSession;
 import jp.ac.chitose.tms.Bean.ProductItem;
 import jp.ac.chitose.tms.Service.IProductService;
 import jp.ac.chitose.tms.Service.ITestRecordService;
@@ -36,6 +37,16 @@ public class TopPage extends WebPage{
 				return productService.fetchProductItems();
 			}
 		};
+
+		add(new Link<Void>("logout"){
+
+			@Override
+			public void onClick() {
+				WicketSession.get().invalidate();
+				setResponsePage(getApplication().getHomePage());
+			}
+
+		});
 
 		add(new PropertyListView<ProductItem>("productList",productList) {
 
