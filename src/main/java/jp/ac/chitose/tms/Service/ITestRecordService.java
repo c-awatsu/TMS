@@ -10,4 +10,5 @@ public interface ITestRecordService {
 	public TestRecordItem getLatestTestRecord(int testId);
 	public List<TestRecordItem> fetchTestRecordItems(int testId);
 	public boolean insert(TestRecordItem testRecordItem);
+	public boolean delete(int testId);
 }

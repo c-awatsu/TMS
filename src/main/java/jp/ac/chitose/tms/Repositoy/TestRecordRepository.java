@@ -61,4 +61,14 @@ public class TestRecordRepository implements ITestRecordReposiory {
 		return jdbc.update(sql, param);
 	}
 
+	@Override
+	public int delete(int testId) {
+		val sql = "delete from test_record where test_record_id = :1";
+		val param = new MapSqlParameterSource()
+						.addValue("1", testId);
+		return jdbc.update(sql, param);
+	}
+
+
+
 }

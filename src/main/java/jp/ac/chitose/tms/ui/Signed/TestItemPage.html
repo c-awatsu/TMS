@@ -6,69 +6,86 @@
 <title>テストしようぜ！！！！！</title>
 </head>
 <body>
-	<table border="1">
-		<thead>
-			<tr>
-				<td>テスト番号</td>
-				<td>種別</td>
-				<td>実行ステップ</td>
-				<td>期待される出力</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr wicket:id="testItem">
-				<td wicket:id="testId"></td>
-				<td wicket:id="classification"></td>
-				<td wicket:id="step"></td>
-				<td wicket:id="expectedOutput"></td>
-			</tr>
-		</tbody>
-	</table>
-
-	<table border="1">
-		<thead>
-			<tr>
-				<td>実施番号</td>
-				<td>実施日</td>
-				<td>担当者</td>
-				<td>結果</td>
-				<td>備考</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr wicket:id="testRecordList">
-				<td wicket:id="testRecordId"></td>
-				<td wicket:id="testDate"></td>
-				<td wicket:id="testerName"></td>
-				<td wicket:id="result"></td>
-				<td wicket:id="note"></td>
-			</tr>
-		</tbody>
-	</table>
-
-	<form wicket:id="testRecordInputForm">
+	<div align="right">
+		<a href="" wicket:id="logout">ログアウト</a>
+	</div>
+	<div align="center">
 		<table border="1">
 			<thead>
 				<tr>
-					<td></td>
+					<td>テスト番号</td>
+					<td>種別</td>
+					<td>実行ステップ</td>
+					<td>期待される出力</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="testItem">
+					<td wicket:id="testId"></td>
+					<td wicket:id="classification"></td>
+					<td wicket:id="step"></td>
+					<td wicket:id="expectedOutput"></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<br />
+
+		<h2>実施結果の一覧</h2>
+
+		<table border="1">
+			<thead>
+				<tr>
+					<td>実施番号</td>
 					<td>実施日</td>
 					<td>担当者</td>
 					<td>結果</td>
 					<td>備考</td>
+					<td><button wicket:id="deleteButton">削除</button></td>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td><input type="submit" value="登録" /></td>
-					<td><input value="2012-02-16" wicket:id="testDate"/></td>
+				<tr wicket:id="testRecordList">
+					<td wicket:id="testRecordId"></td>
+					<td wicket:id="testDate"></td>
 					<td wicket:id="testerName"></td>
-					<td><input type="checkbox"  wicket:id="result" /></td>
-					<td><input type="text"  wicket:id="note" /></td>
+					<td wicket:id="result"></td>
+					<td wicket:id="note"></td>
+					<td wicket:id="deleteCheck"><span wicket:id="deleteLabel"></span></td>
 				</tr>
 			</tbody>
 		</table>
-	</form>
-	<span wicket:id="feedback"></span>
+
+		<br />
+
+		<h2>実施結果の登録</h2>
+
+		<form wicket:id="testRecordInputForm">
+			<table border="1">
+				<thead>
+					<tr>
+						<td></td>
+						<td>実施日</td>
+						<td>担当者</td>
+						<td>結果</td>
+						<td>備考</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input type="submit" value="登録" /></td>
+						<td><input value="2012-02-16" wicket:id="testDate" /></td>
+						<td wicket:id="testerName"></td>
+						<td><input type="checkbox" wicket:id="result" /></td>
+						<td><input type="text" wicket:id="note" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<div wicket:id="feedback"></div>
+		<br />
+		<a href="" wicket:id="pageBack">テスト項目の一覧に戻る</a>
+	</div>
 
 </body>
 </html>

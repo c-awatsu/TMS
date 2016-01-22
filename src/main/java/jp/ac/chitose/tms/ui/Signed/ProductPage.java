@@ -25,7 +25,7 @@ import jp.ac.chitose.tms.Service.ITestRecordService;
 import jp.ac.chitose.tms.Service.ITestService;
 import lombok.val;
 @MountPath("/productPage")
-public class ProductPage extends WebPage {
+public class ProductPage extends AbstractSignedPage {
 	@SpringBean
 	IProductService productService;
 
@@ -106,7 +106,7 @@ public class ProductPage extends WebPage {
 				item.add(new Link<Void>("testRecord"){
 					@Override
 					public void onClick() {
-						setResponsePage(new TestItemPage(testItem.getTestId()));
+						setResponsePage(new TestItemPage(testItem.getTestId(), productId));
 					}
 				});
 			}

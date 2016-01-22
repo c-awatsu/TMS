@@ -61,4 +61,9 @@ public class TestRecordService implements ITestRecordService{
 		return trRepository.insert(testRecordItem) != 0;//更新件数が0件ならfalse
 	}
 
+	@Override
+	public boolean delete(int testId) {
+		return trRepository.delete(testId) == 1;//1行だけ更新できたら成功してる=true
+	}
+
 }

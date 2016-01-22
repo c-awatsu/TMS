@@ -10,4 +10,5 @@ public interface ITestRecordReposiory {
 	public boolean isEmpty(int testId);
 	public List<TestRecordItem> fetchTestRecordItems(int testId);
 	public int insert(TestRecordItem testRecordItem);
+	public int delete(int testId);
 }
