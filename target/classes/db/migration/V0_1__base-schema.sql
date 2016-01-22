@@ -22,7 +22,7 @@ create table test(
 	--
 	classification varchar(256),
 	--
-	step varchar(256),
+	step varchar(1024),
 	--
 	expected_output varchar(1024),
 	--

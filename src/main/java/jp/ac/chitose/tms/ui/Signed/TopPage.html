@@ -6,30 +6,35 @@
 
 </head>
 <body>
-	<div align = "right">
-		<a href = # wicket:id = "logout">ログアウト</a>
+	<div align="right">
+		<a href=# wicket:id="logout">ログアウト</a>
 	</div>
-	<div align = "center">
-	<h2>製品一覧ページ</h2>
-	<br>
-	<table border = "1">
-		<thead>
-			<tr>
-				<td>製品名</td>
-				<td>テスト進行度</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr wicket:id = productList>
-				<td wicket:id = "productLink">
-					<a href = # wicket:id ="productName">製品名</a>
-				</td>
-				<td wicket:id = "progressOfTest">
-					テスト進行度
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div align="center">
+		<h2>製品一覧ページ</h2>
+		<br>
+		<form wicket:id=form>
+			<table border="1">
+				<thead>
+					<tr>
+						<td>製品番号</td>
+						<td>製品名</td>
+						<td>テスト進行度</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id=productList>
+						<td ><a href = # wicket:id = toProductPage><span wicket:id = "productNumber">1</span></a></td>
+						<td wicket:id="name">製品A</td>
+						<td wicket:id="progressOfTest">1/3</td>
+					</tr>
+				</tbody>
+			</table>
+		<br>
+		<button wicket:id = "addProduct">
+			<span wicket:id = "addProductLabelController">+</span>
+		</button>
+		<input type = "submit" value ="登録" />
+		</form>
 	</div>
 </body>
 </html>

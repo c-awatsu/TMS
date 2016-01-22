@@ -2,14 +2,6 @@ package jp.ac.chitose.tms.ui.Signed;
 
 import java.util.List;
 
-import jp.ac.chitose.tms.WicketSession;
-import jp.ac.chitose.tms.Bean.TestItem;
-import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
-import jp.ac.chitose.tms.Service.IProductService;
-import jp.ac.chitose.tms.Service.ITestRecordService;
-import jp.ac.chitose.tms.Service.ITestService;
-import lombok.val;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;
@@ -24,6 +16,14 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
+
+import jp.ac.chitose.tms.WicketSession;
+import jp.ac.chitose.tms.Bean.TestItem;
+import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
+import jp.ac.chitose.tms.Service.IProductService;
+import jp.ac.chitose.tms.Service.ITestRecordService;
+import jp.ac.chitose.tms.Service.ITestService;
+import lombok.val;
 @MountPath("/productPage")
 public class ProductPage extends WebPage {
 	@SpringBean
@@ -50,21 +50,21 @@ public class ProductPage extends WebPage {
 
 		add(new ErrorAlertPanel("feedback"));
 
-		val addTestVisibleContlloer = new Model<Boolean>();
-		addTestVisibleContlloer.setObject(true);
+		val addTestContlloer = new Model<Boolean>();
+		addTestContlloer.setObject(true);
 		val testItemsModel = new ListModel<>(testService.fetchTestItems(productId));
 
 		val inputForm = new Form <List<TestItem>>("inputForm",testItemsModel){
 			@Override
 			public void onSubmit() {
-				if(getModelObject().get(getModelObject().size()-1).getClassification() == null
-				   |getModelObject().get(getModelObject().size()-1).getExpectedOutput() == null
-				   |getModelObject().get(getModelObject().size()-1).getStep() == null){
+				if(getModelObject().stream().anyMatch(t->t.getClassification() == null)
+				   |getModelObject().stream().anyMatch(t->t.getExpectedOutput()==null)
+				   |getModelObject().stream().anyMatch(t->t.getStep()==null)){
 					error(NULL_ERROR);
 				}else{
 					getModelObject().stream()
 						.forEach(g -> testService.upsert(new Model<TestItem>(g)));
-					addTestVisibleContlloer.setObject(true);
+					addTestContlloer.setObject(true);
 					testItemsModel.setObject(testService.fetchTestItems(productId));
 				}
 			}
@@ -117,15 +117,15 @@ public class ProductPage extends WebPage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				if(addTestVisibleContlloer.getObject()){
+				if(addTestContlloer.getObject()){
 					TestItem newTest = new TestItem();
 					newTest.setProductId(productId);
 					testItemsModel.getObject().add(newTest);
-					addTestVisibleContlloer.setObject(false);
+					addTestContlloer.setObject(false);
 					target.add(inputForm);
 				}else{
 					testItemsModel.getObject().remove(testItemsModel.getObject().size()-1);
-					addTestVisibleContlloer.setObject(true);
+					addTestContlloer.setObject(true);
 					target.add(inputForm);
 				}
 			}
@@ -136,7 +136,7 @@ public class ProductPage extends WebPage {
 		addTest.add(new Label("addTestLabelController",new AbstractReadOnlyModel<String>() {
 			@Override
 			public String getObject() {
-				return addTestVisibleContlloer.getObject() ? "テストを追加":"キャンセル";
+				return addTestContlloer.getObject() ? "テストを追加":"キャンセル";
 			}
 		}));
 		add(new Link<Void>("backTopPage"){

@@ -6,7 +6,7 @@ import jp.ac.chitose.tms.Bean.ProductItem;
 
 public interface IProductRepository {
 	public List<ProductItem> fetchProductItems();
-	public int selectProductItems(String productName);
 	public ProductItem fetchProductItem(int productId);
 	public boolean insert(String name);
+	public boolean update(String name,int productId);
 }

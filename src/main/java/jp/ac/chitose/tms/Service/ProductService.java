@@ -29,6 +29,15 @@ public class ProductService implements IProductService {
 	public boolean insertProductItem(IModel<ProductItem> productNameModel) {
 		return productRepository.insert(productNameModel.getObject().getName());
 	}
+
+	@Override
+	public boolean upsert(IModel<ProductItem> productItemsModel) {
+		if(productItemsModel.getObject().getProductId() == 0){
+			return productRepository.insert(productItemsModel.getObject().getName());
+		}else{
+			return productRepository.update(productItemsModel.getObject().getName(), productItemsModel.getObject().getProductId());
+		}
+	}
 }
 
 
