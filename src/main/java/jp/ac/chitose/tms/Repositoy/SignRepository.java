@@ -2,12 +2,15 @@ package jp.ac.chitose.tms.Repositoy;
 
 import java.util.List;
 
-import lombok.val;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import jp.ac.chitose.tms.Bean.Sign;
+import jp.ac.chitose.tms.Bean.SignIn;
+import lombok.val;
 
 @Repository
 public class SignRepository implements ISignRepository{
@@ -30,22 +33,30 @@ public class SignRepository implements ISignRepository{
 	}
 
 	@Override
-	public int fetchAccountId(String loginId, String passphrase) {
-		val sql = "select account_id from account where "
+	public SignIn fetchAccountId(String loginId, String passphrase) {
+		val sql = "select account_id,nickname from account where "
 				+ "login_id = :1 "
 				+ "and passphrase = :2 ";
 		val param = new MapSqlParameterSource()
 				.addValue("1", loginId)
 				.addValue("2", passphrase);
-		return jdbc.queryForObject(sql, param,Integer.class);
+		val mapper = new  BeanPropertyRowMapper<SignIn>(SignIn.class);
+		return jdbc.queryForObject(sql, param,mapper);
 	}
 
 	@Override
-	public List<Integer> fetchAccountId() {
+	public List<Sign> fetchAccountId() {
 		val sql = "select account_id from account";
-		return jdbc.execute(sql, null);
+		val mapper =new BeanPropertyRowMapper<Sign>(Sign.class);
+		return jdbc.query(sql, mapper);
 	}
 
-
+	@Override
+	public String fetchNickName(int accountid) {
+		val sql = "select nickname from account where account_id = :1";
+		val param  = new MapSqlParameterSource()
+						.addValue("1", accountid);
+		return jdbc.queryForObject(sql, param, String.class);
+	}
 
 }

@@ -1,9 +1,7 @@
 package jp.ac.chitose.tms;
 
-import jp.ac.chitose.tms.Event.EventHandlerDispatcher;
-import jp.ac.chitose.tms.ui.Sign.SignInPage;
-
 import org.apache.wicket.Page;
+import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
@@ -16,6 +14,8 @@ import org.springframework.context.ApplicationContext;
 import org.wicketstuff.annotation.scan.AnnotatedMountScanner;
 
 import de.agilecoders.wicket.webjars.WicketWebjars;
+import jp.ac.chitose.tms.Event.EventHandlerDispatcher;
+import jp.ac.chitose.tms.ui.Sign.SignInPage;
 
 @SpringBootApplication
 public class WicketApplication extends AuthenticatedWebApplication {
@@ -59,14 +59,20 @@ public class WicketApplication extends AuthenticatedWebApplication {
 		mountPage("/" + page.getSimpleName(), page);
 	}
 
-	@Override
+
 	protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
 		return WicketSession.class;
 	}
 
-	@Override
+
 	protected Class<? extends WebPage> getSignInPageClass() {
 		return SignInPage.class;
 	}
+
+	 @Override
+	    public RuntimeConfigurationType getConfigurationType(){
+	         return RuntimeConfigurationType.DEPLOYMENT;
+	     }
+
 
 }

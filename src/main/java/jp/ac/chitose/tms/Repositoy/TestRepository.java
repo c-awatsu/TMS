@@ -2,14 +2,14 @@ package jp.ac.chitose.tms.Repositoy;
 
 import java.util.List;
 
-import jp.ac.chitose.tms.Bean.TestItem;
-import jp.ac.chitose.tms.Bean.TestRecordItem;
-import lombok.val;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import jp.ac.chitose.tms.Bean.TestItem;
+import lombok.val;
 
 @Repository
 public class TestRepository implements ITestRepository {
@@ -18,20 +18,46 @@ public class TestRepository implements ITestRepository {
 
 	@Override
 	public List<TestItem> fetchTestItems(int productId) {
-		val sql = "select classification,step,expected_output,result from test "
+		val sql = "select * from test "
 				+ "where product_id = :1 ";
-		val param = new MapSqlParameterSource()
-				.addValue("1", productId);
-		return jdbc.queryForList(sql, param,TestItem.class);
+		val param = new MapSqlParameterSource().addValue("1", productId);
+		val mapper = new BeanPropertyRowMapper<TestItem>(TestItem.class);
+		return jdbc.query(sql, param, mapper);
 	}
 
 	@Override
-	public List<TestRecordItem> fetchTestRecordItems(long testId) {
-		val sql = "select result from test_record "
-				+ "where test_id = :1";
+	public boolean insert(TestItem item) {
+		val sql = "insert into test "
+				+ "(classification, step, expected_output, product_id) "
+				+ "values (:1, :2, :3, :4)";
 		val param = new MapSqlParameterSource()
-				.addValue("1", testId);
-		return jdbc.queryForList(sql, param,TestRecordItem.class);
+						.addValue("1", item.getClassification())
+						.addValue("2", item.getStep())
+						.addValue("3", item.getExpectedOutput())
+						.addValue("4", item.getProductId());
+		return jdbc.update(sql, param) == 1;
+	}
+
+	@Override
+	public boolean update(TestItem item) {
+		val sql = "update test set classification = :1,step = :2,expected_output = :3 "
+				+ "where product_id = :4 and test_id = :5";
+		val param = new MapSqlParameterSource()
+			.addValue("1", item.getClassification())
+			.addValue("2", item.getStep())
+			.addValue("3", item.getExpectedOutput())
+			.addValue("4", item.getProductId())
+			.addValue("5",item.getTestId());
+		return jdbc.update(sql,param) == 1;
+	}
+
+	@Override
+	public TestItem fetchTestItem(int testId) {
+		val sql = "select * from test where test_id = :1";
+		val param = new MapSqlParameterSource()
+						.addValue("1", testId);
+		val mapper = new BeanPropertyRowMapper<TestItem>(TestItem.class);
+		return jdbc.queryForObject(sql, param, mapper);
 	}
 
 }

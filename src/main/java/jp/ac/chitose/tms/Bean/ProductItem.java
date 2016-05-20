@@ -2,15 +2,20 @@ package jp.ac.chitose.tms.Bean;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
 public class ProductItem implements Serializable{
-	private long productId;
-	private String productName;
+	@NonNull
+	private Integer productId;
+	@NonNull
+	private String name;
 
 	public ProductItem(){
-		productId = 0;
-		productName = "";
+		this(0,"");
 	}
+
 }

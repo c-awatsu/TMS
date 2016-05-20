@@ -1,19 +1,15 @@
 package jp.ac.chitose.tms.Service;
 
-import static java.util.Optional.*;
-
-import java.util.Optional;
-
-import jp.ac.chitose.tms.Bean.Sign;
-import jp.ac.chitose.tms.Bean.SignIn;
-import jp.ac.chitose.tms.Bean.SignUp;
-import jp.ac.chitose.tms.Repositoy.ISignRepository;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import jp.ac.chitose.tms.Bean.Sign;
+import jp.ac.chitose.tms.Bean.SignIn;
+import jp.ac.chitose.tms.Bean.SignUp;
+import jp.ac.chitose.tms.Repositoy.ISignRepository;
 @Service
 public class SignService implements ISignService {
 
@@ -35,18 +31,16 @@ public class SignService implements ISignService {
 	}
 
 	@Override
-	public Optional<Sign> authenticate(SignIn signIn) {
+	public Sign authenticate(SignIn signIn) {
 		Sign sign = null;
 		try{
-			int accountId = signRepository.fetchAccountId(signIn.getLoginId(),
-														DigestUtils.sha256Hex(signIn.getPassphrase())
-														);
-			sign = new Sign(accountId,signIn.getLoginId());
+			SignIn accountData = signRepository.fetchAccountId(signIn.getLoginId(),DigestUtils.sha256Hex(signIn.getPassphrase()));
+			sign = new Sign(accountData.getAccountId(),signIn.getLoginId(),accountData.getNickName());
 		}catch(EmptyResultDataAccessException e){
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
-		return ofNullable(sign);
+		return sign;
 	}
 
 	@Override
@@ -59,5 +53,12 @@ public class SignService implements ISignService {
 		}
 		return flag;
 	}
+
+	@Override
+	public String fetchNickName(int accountId) {
+		return signRepository.fetchNickName(accountId);
+	}
+
+
 
 }

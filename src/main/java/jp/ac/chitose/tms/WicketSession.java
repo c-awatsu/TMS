@@ -1,26 +1,20 @@
 package jp.ac.chitose.tms;
 
-import static java.util.Optional.*;
-
-import java.util.Optional;
-
-import jp.ac.chitose.tms.Bean.Sign;
-import lombok.Getter;
-import lombok.ToString;
-
 import org.apache.wicket.Session;
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
+
+import jp.ac.chitose.tms.Bean.Sign;
+import lombok.ToString;
 
 
 @ToString
 public class WicketSession extends AbstractAuthenticatedWebSession {
 	private static final long serialVersionUID = 2292251890809020570L;
 
-	@Getter
-	private Optional<Sign> sign;
+
+	private Sign sign;
 
 	public static WicketSession get() {
 		return (WicketSession) Session.get();
@@ -28,40 +22,48 @@ public class WicketSession extends AbstractAuthenticatedWebSession {
 
 	public WicketSession(Request request) {
 		super(request);
-		sign = empty();
+		sign = null;
 	}
 
 	@Override
 	public final void invalidate() {
 		replaceSession();
-		sign = empty();
+		sign = null;
 		super.invalidate();
 	}
-
 	@Override
-	public boolean isSignedIn() {
-		return sign.isPresent();
+	public boolean isSignedIn(){
+		return sign != null;
 	}
 
-	public final void signIn(Optional<Sign> sign) {
+	public final void signIn(Sign sign) {
 		this.sign = sign;
-		this.sign.ifPresent(s -> {
+		if(this.sign != null){
 			replaceSession();
 			dirty();
-		});
+		}
 	}
-
+	public final Sign getSign(){
+		return sign;
+	}
 	public final int getAccountId() {
-		return sign.map(s -> s.getAccountId()).orElseThrow(() -> new WicketRuntimeException("session is empty!"));
+		return sign.getAccountId();
 	}
 
 	public final String getLoginId() {
-		return sign.map(s -> s.getLoginId()).orElseThrow(() -> new WicketRuntimeException("session is empty!"));
+		return sign.getLoginId();
+	}
+
+	public final String getNickname(){
+		return sign.getNickname();
 	}
 
 	@Override
 	public Roles getRoles() {
+		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
+
+
 
 }

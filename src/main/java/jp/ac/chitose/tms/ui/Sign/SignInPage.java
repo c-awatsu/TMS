@@ -1,13 +1,8 @@
 package jp.ac.chitose.tms.ui.Sign;
 
 import static jp.ac.chitose.tms.Constant.Validation.*;
-import jp.ac.chitose.tms.WicketSession;
-import jp.ac.chitose.tms.Bean.SignIn;
-import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
-import jp.ac.chitose.tms.Service.ISignService;
-import jp.ac.chitose.tms.ui.Signed.TopPage;
-import lombok.val;
 
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.HTML5Attributes;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
@@ -20,6 +15,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.wicketstuff.annotation.mount.MountPath;
 
+import jp.ac.chitose.tms.WicketSession;
+import jp.ac.chitose.tms.Bean.SignIn;
+import jp.ac.chitose.tms.Feedback.ErrorAlertPanel;
+import jp.ac.chitose.tms.Service.ISignService;
+import jp.ac.chitose.tms.ui.Signed.TopPage;
+import lombok.val;
+
 @MountPath("/SignInPage")
 public class SignInPage extends WebPage{
 	private static final long serialVersionUID = 1765245004856243150L;
@@ -30,14 +32,20 @@ public class SignInPage extends WebPage{
 	private ISignService signService;
 
 	public SignInPage(){
+		if(!signService.exsitsUser()){
+			throw new RestartResponseException(SignUpPage.class);
+		}
+
 		add(new ErrorAlertPanel("feedback"));
+
 		add(new Link<Void>("toSignUpPage"){
 			@Override
 			public void onClick() {
 				setResponsePage(new SignUpPage());
 			}
 		});
-		val form = new Form<SignIn>("form",new CompoundPropertyModel<SignIn>(new SignIn())){
+
+		val form = new Form<SignIn>("form",new CompoundPropertyModel<>(new SignIn())){
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
@@ -45,6 +53,8 @@ public class SignInPage extends WebPage{
 				WicketSession.get().signIn(sign);
 				if(WicketSession.get().isSignedIn()){
 					setResponsePage(TopPage.class);
+				}else{
+					error(SIGN_ERROR);
 				}
 			}
 		};
@@ -71,6 +81,8 @@ public class SignInPage extends WebPage{
 				super.onInitialize();
 				setLabel(Model.of(LABEL_NAME));
 				add(new HTML5Attributes());
+				add(StringValidator.lengthBetween(SIGNING_MIN_LENGTH, SIGNING_MAX_LENGTH));
+
 			};
 		});
 	}
